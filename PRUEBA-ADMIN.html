@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>👑 Panel de Administradora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+/* =====================================================
+   admin.css  ·  DISEÑO del Panel de Administradora
+   App independiente y separada por seguridad.
+   ===================================================== */
+
+:root{
+  --fondo-claro:#FFF7F0; --fondo-oscuro:#1E1B2E;
+  --tarjeta-claro:#FFFFFF; --tarjeta-oscuro:#2A2640;
+  --texto-claro:#3D3550; --texto-oscuro:#F0ECFF;
+  --texto-suave-claro:#8A8299; --texto-suave-oscuro:#A8A2C0;
+  --principal:#FF7E67; --principal-oscuro:#E8654F;
+  --secundario:#4ECDC4; --acento:#FFD166;
+  --borde-claro:#F0E6DC; --borde-oscuro:#3D3858;
+  --peligro:#E63946; --ok:#2EC4B6;
+  --en-linea:#2EC4B6; --ocupada:#FF9F1C; --ausente:#FFD166; --desconectada:#C2BDD0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Quicksand',sans-serif;background:var(--fondo-claro);color:var(--texto-claro);min-height:100vh;transition:background .4s,color .4s}
+body.oscuro{background:var(--fondo-oscuro);color:var(--texto-oscuro)}
+
+.btn-tema{position:fixed;top:18px;right:18px;z-index:200;width:40px;height:40px;border-radius:50%;border:none;background:var(--tarjeta-claro);cursor:pointer;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,.12);transition:transform .2s}
+body.oscuro .btn-tema{background:var(--tarjeta-oscuro)}
+.btn-tema:hover{transform:scale(1.1) rotate(15deg)}
+
+/* ===== Vista de acceso seguro ===== */
+.centrado{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.tarjeta-acceso{background:var(--tarjeta-claro);border-radius:28px;padding:44px 38px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(255,126,103,.18);transition:background .4s}
+body.oscuro .tarjeta-acceso{background:var(--tarjeta-oscuro)}
+.escudo{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--acento),var(--principal));display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 18px;animation:latido 1.6s ease-in-out infinite}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.tarjeta-acceso h1{font-family:'Pacifico',cursive;font-size:26px;margin-bottom:10px;color:var(--principal)}
+.subtitulo{font-size:14px;color:var(--texto-suave-claro);margin-bottom:24px;line-height:1.5}
+body.oscuro .subtitulo{color:var(--texto-suave-oscuro)}
+.campo{margin-bottom:18px;position:relative;text-align:left}
+.campo label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.campo input{width:100%;padding:13px 16px;border:2px solid var(--borde-claro);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:15px;background:var(--fondo-claro);color:var(--texto-claro);outline:none;transition:border-color .2s,box-shadow .2s}
+body.oscuro .campo input{background:var(--fondo-oscuro);border-color:var(--borde-oscuro);color:var(--texto-oscuro)}
+.campo input:focus{border-color:var(--principal);box-shadow:0 0 0 4px rgba(255,126,103,.15)}
+.campo input.error{border-color:var(--peligro);animation:temblor .4s}
+@keyframes temblor{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.ojo{position:absolute;right:14px;top:38px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--texto-suave-claro)}
+body.oscuro .ojo{color:var(--texto-suave-oscuro)}
+.mensaje-error{color:var(--peligro);font-size:12px;margin-top:6px;font-weight:600;display:none}
+.mensaje-error.visible{display:block}
+.btn-entrar{width:100%;padding:14px;background:linear-gradient(135deg,var(--principal),var(--principal-oscuro));color:#fff;border:none;border-radius:14px;font-family:'Quicksand',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 18px rgba(255,126,103,.35)}
+.btn-entrar:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,126,103,.45)}
+.pista{margin-top:18px;font-size:12px;color:var(--texto-suave-claro)}
+body.oscuro .pista{color:var(--texto-suave-oscuro)}
+
+/* ===== Vista del panel ===== */
+#vistaPanel{display:none}
+#vistaPanel.visible{display:block}
+.barra-superior{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;background:var(--tarjeta-claro);box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:10;transition:background .4s;flex-wrap:wrap;gap:10px}
+body.oscuro .barra-superior{background:var(--tarjeta-oscuro)}
+.logo-chico{font-family:'Pacifico',cursive;font-size:22px;color:var(--principal)}
+.derecha{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.btn-secundario{padding:8px 14px;border:2px solid var(--borde-claro);background:transparent;border-radius:12px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:13px;color:var(--texto-claro);cursor:pointer;transition:all .2s}
+body.oscuro .btn-secundario{border-color:var(--borde-oscuro);color:var(--texto-oscuro)}
+.btn-secundario:hover{border-color:var(--principal);color:var(--principal)}
+
+.contenido-admin{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+.tarjetas-estadisticas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px}
+.tarjeta-estadistica{background:var(--tarjeta-claro);border-radius:18px;padding:20px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.06);transition:background .4s}
+body.oscuro .tarjeta-estadistica{background:var(--tarjeta-oscuro)}
+.tarjeta-estadistica .numero{font-size:34px;font-weight:700;line-height:1}
+.tarjeta-estadistica .etiqueta{font-size:12px;font-weight:600;color:var(--texto-suave-claro);margin-top:6px;text-transform:uppercase;letter-spacing:.5px}
+body.oscuro .tarjeta-estadistica .etiqueta{color:var(--texto-suave-oscuro)}
+.n-total .numero{color:var(--principal)}
+.n-linea .numero{color:var(--en-linea)}
+.n-ocupadas .numero{color:var(--ocupada)}
+.n-eliminadas .numero{color:var(--peligro)}
+
+.buscador{display:flex;align-items:center;gap:10px;background:var(--tarjeta-claro);border:2px solid var(--borde-claro);border-radius:16px;padding:12px 16px;margin-bottom:16px;transition:all .2s}
+body.oscuro .buscador{background:var(--tarjeta-oscuro);border-color:var(--borde-oscuro)}
+.buscador:focus-within{border-color:var(--principal);box-shadow:0 0 0 4px rgba(255,126,103,.15)}
+.icono-buscar{font-size:18px}
+.buscador input{flex:1;border:none;background:transparent;outline:none;font-family:'Quicksand',sans-serif;font-size:15px;color:var(--texto-claro)}
+body.oscuro .buscador input{color:var(--texto-oscuro)}
+
+.lista-personas{list-style:none;display:flex;flex-direction:column;gap:10px}
+.persona{display:flex;align-items:center;gap:14px;background:var(--tarjeta-claro);border:2px solid transparent;border-radius:18px;padding:14px 18px;transition:all .25s;animation:aparecer .4s ease}
+@keyframes aparecer{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+body.oscuro .persona{background:var(--tarjeta-oscuro)}
+.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--acento),var(--principal));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;position:relative}
+.avatar .estado{position:absolute;bottom:0;right:0;width:14px;height:14px;border-radius:50%;border:3px solid var(--tarjeta-claro)}
+body.oscuro .avatar .estado{border-color:var(--tarjeta-oscuro)}
+.estado.en-linea{background:var(--en-linea)}.estado.ocupada{background:var(--ocupada)}.estado.ausente{background:var(--ausente)}.estado.desconectada{background:var(--desconectada)}
+.persona-info{flex:1;min-width:0}
+.persona-nombre{font-weight:700;font-size:16px;margin-bottom:3px;word-break:break-word}
+.persona-estado{font-size:13px;color:var(--texto-suave-claro);font-weight:500}
+body.oscuro .persona-estado{color:var(--texto-suave-oscuro)}
+.persona-estado .punto{font-size:11px;margin-right:4px}
+.btn-eliminar{padding:8px 12px;border:2px solid var(--peligro);background:transparent;color:var(--peligro);border-radius:10px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.btn-eliminar:hover{background:var(--peligro);color:#fff;transform:scale(1.05)}
+.persona.eliminada{animation:desvanecer .5s forwards}
+@keyframes desvanecer{to{opacity:0;transform:translateX(40px);height:0;padding:0;margin:0}}
+.sin-resultados{text-align:center;padding:40px 20px;color:var(--texto-suave-claro);font-size:15px}
+body.oscuro .sin-resultados{color:var(--texto-suave-oscuro)}
+.sin-resultados .emoji{font-size:40px;display:block;margin-bottom:10px}
+
+.registro-eliminadas{background:var(--tarjeta-claro);border-radius:18px;padding:18px;margin-top:24px;box-shadow:0 4px 14px rgba(0,0,0,.06);transition:background .4s}
+body.oscuro .registro-eliminadas{background:var(--tarjeta-oscuro)}
+.registro-eliminadas h3{font-size:16px;margin-bottom:12px;color:var(--peligro)}
+.registro-eliminadas ul{list-style:none;font-size:13px;color:var(--texto-suave-claro)}
+body.oscuro .registro-eliminadas ul{color:var(--texto-suave-oscuro)}
+.registro-eliminadas li{padding:6px 0;border-bottom:1px dashed var(--borde-claro);word-break:break-word}
+body.oscuro .registro-eliminadas li{border-bottom-color:var(--borde-oscuro)}
+.registro-eliminadas .vacio{border:none;color:var(--texto-suave-claro)}
+.btn-restaurar{margin-top:14px;padding:10px 18px;border:2px solid var(--secundario);background:transparent;color:var(--secundario);border-radius:12px;font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-restaurar:hover{background:var(--secundario);color:#fff}
+
+/* ===== CELULAR y TABLET (responsive = PWA) ===== */
+@media(max-width:600px){
+  .tarjeta-acceso{padding:32px 24px}
+  .tarjeta-acceso h1{font-size:22px}
+  .barra-superior{padding:14px 16px}
+  .logo-chico{font-size:18px}
+  .persona{padding:12px 14px;gap:10px}
+  .persona-nombre{font-size:14px}
+  .btn-eliminar{padding:7px 10px;font-size:12px}
+  .tarjetas-estadisticas{grid-template-columns:repeat(2,1fr)}
+  .tarjeta-estadistica .numero{font-size:26px}
+}
+
+</style>
+</head>
+<body>
+
+  <button class="btn-tema" id="btnTema" title="Cambiar tema">🌙</button>
+
+  <!-- ===== VISTA 1: ACCESO SEGURO (contraseña) ===== -->
+  <div id="vistaAcceso" class="centrado">
+    <div class="tarjeta-acceso">
+      <div class="escudo">🛡️</div>
+      <h1>Panel de Administradora</h1>
+      <p class="subtitulo">Acceso restringido. Escribe la contraseña maestra.</p>
+      <div class="campo">
+        <label for="passAdmin">Contraseña maestra</label>
+        <input type="password" id="passAdmin" placeholder="••••••••">
+        <button type="button" class="ojo" id="ojoAdmin">👁️</button>
+        <div class="mensaje-error" id="errPass">Contraseña incorrecta. Intenta de nuevo.</div>
+      </div>
+      <button class="btn-entrar" id="btnEntrarAdmin">Entrar al panel 🔐</button>
+      <p class="pista">💡 Pista de prueba: <strong>admin123</strong> (cámbiala en admin.js)</p>
+    </div>
+  </div>
+
+  <!-- ===== VISTA 2: EL PANEL ===== -->
+  <div id="vistaPanel">
+    <header class="barra-superior">
+      <div class="logo-chico">👑 Panel de Administradora</div>
+      <div class="derecha">
+        <button class="btn-secundario" id="btnCerrarSesion">🚪 Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="contenido-admin">
+      <!-- Tarjetas de estadísticas en vivo -->
+      <div class="tarjetas-estadisticas">
+        <div class="tarjeta-estadistica n-total"><div class="numero" id="estTotal">0</div><div class="etiqueta">Total usuarias</div></div>
+        <div class="tarjeta-estadistica n-linea"><div class="numero" id="estLinea">0</div><div class="etiqueta">En línea ahora</div></div>
+        <div class="tarjeta-estadistica n-ocupadas"><div class="numero" id="estOcupadas">0</div><div class="etiqueta">Ocupadas / Ausentes</div></div>
+        <div class="tarjeta-estadistica n-eliminadas"><div class="numero" id="estEliminadas">0</div><div class="etiqueta">Eliminadas</div></div>
+      </div>
+
+      <div class="buscador">
+        <span class="icono-buscar">🔍</span>
+        <input type="text" id="buscarAdmin" placeholder="Buscar usuaria en el panel...">
+      </div>
+
+      <ul class="lista-personas" id="listaAdmin"></ul>
+
+      <div class="registro-eliminadas">
+        <h3>🗑️ Registro de eliminadas (en tiempo real)</h3>
+        <ul id="listaEliminadas"><li class="vacio">Aún no has eliminado a nadie.</li></ul>
+        <button class="btn-restaurar" id="btnRestaurar">↩️ Restaurar todas las usuarias</button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+/* =====================================================
+   admin.js  ·  LÓGICA del Panel de Administradora
+   App independiente: tiene su propia contraseña.
+   ===================================================== */
+
+// 🔐 CONTRASEÑA MAESTRA — cámbiala por la que tú quieras
+const CONTRASENA_MAESTRA = 'admin123';
+
+let eliminadas = [];
+let filtroBuscar = '';
+
+const baseOriginal = [
+  { nombre: 'María González',   avatar: '👩‍🦱', estado: 'en-linea' },
+  { nombre: 'Ana Pérez',        avatar: '👩‍🦰', estado: 'en-linea' },
+  { nombre: 'Luisa Fernández',  avatar: '👩',    estado: 'ocupada' },
+  { nombre: 'Carmen Ruiz',      avatar: '👩‍🦳', estado: 'ausente' },
+  { nombre: 'Sofía Martínez',   avatar: '👱‍♀️', estado: 'en-linea' },
+  { nombre: 'Laura Gómez',      avatar: '👩‍🎤', estado: 'desconectada' },
+  { nombre: 'Daniela Torres',   avatar: '👩‍🔬', estado: 'en-linea' },
+  { nombre: 'Valeria Jiménez',  avatar: '👩‍🎨', estado: 'ocupada' },
+  { nombre: 'Andrea López',     avatar: '🧑‍🦰', estado: 'ausente' },
+  { nombre: 'Patricia Sánchez', avatar: '👩‍🏫', estado: 'en-linea' },
+];
+let usuarias = baseOriginal.map(u => ({ ...u }));
+
+const estadoTexto = {
+  'en-linea':      { texto: 'En línea ahora',        emoji: '🟢' },
+  'ocupada':       { texto: 'Ocupada, no molestar',  emoji: '🟠' },
+  'ausente':       { texto: 'Ausente, vuelve pronto',emoji: '🟡' },
+  'desconectada':  { texto: 'Desconectada',          emoji: '⚪' },
+};
+
+// ---------- 1. Modo claro / oscuro ----------
+document.getElementById('btnTema').addEventListener('click', () => {
+  document.body.classList.toggle('oscuro');
+  document.getElementById('btnTema').textContent =
+    document.body.classList.contains('oscuro') ? '☀️' : '🌙';
+});
+
+// ---------- 2. Ojito de la contraseña maestra ----------
+document.getElementById('ojoAdmin').addEventListener('click', () => {
+  const input = document.getElementById('passAdmin');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  document.getElementById('ojoAdmin').textContent = input.type === 'password' ? '👁️' : '🙈';
+});
+
+// ---------- 3. Entrar al panel (verificar contraseña) ----------
+function entrarAlPanel() {
+  const input = document.getElementById('passAdmin');
+  const err = document.getElementById('errPass');
+  if (input.value === CONTRASENA_MAESTRA) {
+    err.classList.remove('visible');
+    input.classList.remove('error');
+    document.getElementById('vistaAcceso').style.display = 'none';
+    document.getElementById('vistaPanel').classList.add('visible');
+    dibujarPanel();
+  } else {
+    input.classList.add('error');
+    err.classList.add('visible');
+    input.value = '';
+  }
+}
+document.getElementById('btnEntrarAdmin').addEventListener('click', entrarAlPanel);
+document.getElementById('passAdmin').addEventListener('keydown', e => { if (e.key === 'Enter') entrarAlPanel(); });
+
+// ---------- 4. Cerrar sesión ----------
+document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+  document.getElementById('vistaPanel').classList.remove('visible');
+  document.getElementById('vistaAcceso').style.display = 'flex';
+  document.getElementById('passAdmin').value = '';
+});
+
+// ---------- 5. Dibujar el panel (estadísticas + lista) ----------
+function dibujarPanel() {
+  document.getElementById('estTotal').textContent = usuarias.length;
+  document.getElementById('estLinea').textContent = usuarias.filter(u => u.estado === 'en-linea').length;
+  document.getElementById('estOcupadas').textContent = usuarias.filter(u => u.estado === 'ocupada' || u.estado === 'ausente').length;
+  document.getElementById('estEliminadas').textContent = eliminadas.length;
+
+  const lista = document.getElementById('listaAdmin');
+  lista.innerHTML = '';
+  const filtradas = usuarias.filter(u => u.nombre.toLowerCase().includes(filtroBuscar.toLowerCase()));
+  if (filtradas.length === 0) {
+    lista.innerHTML = '<li class="sin-resultados"><span class="emoji">🔍</span>No encontré a esa usuaria</li>';
+  }
+  filtradas.forEach(u => {
+    const info = estadoTexto[u.estado];
+    const li = document.createElement('li');
+    li.className = 'persona';
+    li.innerHTML = `
+      <div class="avatar">${u.avatar}<span class="estado ${u.estado}"></span></div>
+      <div class="persona-info">
+        <div class="persona-nombre">${u.nombre}</div>
+        <div class="persona-estado"><span class="punto">${info.emoji}</span>${info.texto}</div>
+      </div>
+      <button class="btn-eliminar">🗑️ Eliminar</button>`;
+    li.querySelector('.btn-eliminar').addEventListener('click', () => eliminarUsuaria(u.nombre, li));
+    lista.appendChild(li);
+  });
+
+  const hist = document.getElementById('listaEliminadas');
+  if (eliminadas.length === 0) {
+    hist.innerHTML = '<li class="vacio">Aún no has eliminado a nadie.</li>';
+  } else {
+    hist.innerHTML = eliminadas.map(e => `<li>🗑️ <strong>${e.nombre}</strong> · ${e.cuando}</li>`).join('');
+  }
+}
+document.getElementById('buscarAdmin').addEventListener('input', e => { filtroBuscar = e.target.value; dibujarPanel(); });
+
+// ---------- 6. Eliminar usuaria ----------
+function eliminarUsuaria(nombre, tarjetita) {
+  tarjetita.classList.add('eliminada');
+  setTimeout(() => {
+    usuarias = usuarias.filter(u => u.nombre !== nombre);
+    eliminadas.unshift({ nombre: nombre, cuando: new Date().toLocaleTimeString() });
+    dibujarPanel();
+  }, 450);
+}
+document.getElementById('btnRestaurar').addEventListener('click', () => {
+  usuarias = baseOriginal.map(u => ({ ...u }));
+  eliminadas = [];
+  dibujarPanel();
+});
+
+// ---------- 7. Tiempo real: cada 3s alguien cambia de estado ----------
+setInterval(() => {
+  if (usuarias.length === 0) return;
+  if (!document.getElementById('vistaPanel').classList.contains('visible')) return;
+  const cual = Math.floor(Math.random() * usuarias.length);
+  const estados = ['en-linea', 'ocupada', 'ausente', 'desconectada'];
+  let nuevo;
+  do { nuevo = estados[Math.floor(Math.random() * estados.length)]; } while (nuevo === usuarias[cual].estado);
+  usuarias[cual].estado = nuevo;
+  dibujarPanel();
+}, 3000);
+
+</script>
+</body>
+</html>
