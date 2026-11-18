@@ -1,0 +1,458 @@
+/* ======================================
+   ESTILOS GENERALES
+   ====================================== */
+:root {
+  --fondo: #FFF7F0;
+  --fondo-oscuro: #1E1B2E;
+  --texto: #3D3550;
+  --claro: #FFFFFF;
+  --primario: #FF7E67;
+  --secundario: #4ECDC4;
+  --acento: #FFD166;
+  --borde: #F0E6DC;
+  --error: #E63946;
+  --exito: #2EC4B6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+/* ======================================
+   PÁGINA DE INICIO
+   ====================================== */
+.pagina-inicio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.contenedor-inicio {
+  max-width: 400px;
+  width: 100%;
+}
+
+.titulo-principal {
+  font-family: 'Pacifico', cursive;
+  font-size: 2.5rem;
+  color: var(--primario);
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  font-size: 1.1rem;
+  color: #777;
+  margin-bottom: 40px;
+}
+
+.botones-inicio {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 50px;
+}
+
+.boton-principal, .boton-secundario, .boton {
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.boton-principal {
+  background: linear-gradient(135deg, var(--primario), #E86A50);
+  color: white;
+}
+
+.boton-principal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 126, 103, 0.35);
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--primario);
+  border: 2px solid var(--primario);
+}
+
+.boton-secundario:hover {
+  background: var(--primario);
+  color: white;
+}
+
+.caracteristicas {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.item {
+  background: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ======================================
+   PÁGINA DE LOGIN
+   ====================================== */
+.pagina-login {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.burbuja {
+  position: fixed;
+  border-radius: 50%;
+  opacity: 0.25;
+  z-index: 0;
+}
+
+.b1 {
+  width: 180px;
+  height: 180px;
+  background: var(--primario);
+  top: 8%;
+  left: 6%;
+}
+
+.b2 {
+  width: 120px;
+  height: 120px;
+  background: var(--secundario);
+  bottom: 12%;
+  right: 8%;
+}
+
+.b3 {
+  width: 90px;
+  height: 90px;
+  background: var(--acento);
+  top: 60%;
+  left: 12%;
+}
+
+.contenedor-login {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 10px 60px rgba(255, 126, 103, 0.15);
+  overflow: hidden;
+}
+
+.lado-izquierdo {
+  background: linear-gradient(135deg, var(--primario), var(--acento));
+  padding: 40px 30px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lado-izquierdo h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.lado-izquierdo p {
+  font-size: 1rem;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.beneficios p {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.enlace-inicio {
+  margin-top: 30px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.enlace-inicio a {
+  text-decoration: underline;
+}
+
+.lado-derecho {
+  padding: 40px 30px;
+}
+
+.pestanas {
+  display: flex;
+  background: var(--fondo);
+  border-radius: 14px;
+  padding: 5px;
+  margin-bottom: 30px;
+}
+
+.pestana {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #888;
+}
+
+.pestana.activa {
+  background: white;
+  color: var(--primario);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.formulario {
+  display: none;
+}
+
+.formulario.visible {
+  display: block;
+}
+
+.campo {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.campo label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.campo input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid var(--borde);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--fondo);
+  outline: none;
+}
+
+.campo input:focus {
+  border-color: var(--primario);
+  box-shadow: 0 0 0 4px rgba(255, 126, 103, 0.1);
+}
+
+.campo input.error {
+  border-color: var(--error);
+}
+
+.error {
+  font-size: 0.8rem;
+  color: var(--error);
+  margin-top: 5px;
+  display: none;
+}
+
+.error.visible {
+  display: block;
+}
+
+.ojito {
+  position: absolute;
+  right: 14px;
+  top: 36px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.boton {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primario), #E86A50);
+  color: white;
+  border: none;
+  margin-top: 10px;
+}
+
+.exito {
+  text-align: center;
+  padding: 30px 20px 10px;
+  display: none;
+}
+
+.exito.visible {
+  display: block;
+}
+
+.exito h3 {
+  font-size: 1.3rem;
+  color: var(--exito);
+  margin-bottom: 10px;
+}
+
+.exito p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* ======================================
+   PÁGINA DE SALA
+   ====================================== */
+.pagina-sala {
+  background: var(--fondo);
+  min-height: 100vh;
+}
+
+.barra-superior {
+  background: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.3rem;
+  color: var(--primario);
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.boton-salir {
+  padding: 6px 14px;
+  border: 2px solid var(--primario);
+  color: var(--primario);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.boton-salir:hover {
+  background: var(--primario);
+  color: white;
+}
+
+.contenido {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.contenido h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.descripcion {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.buscador {
+  margin-bottom: 25px;
+}
+
+.buscador input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--borde);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: white;
+  outline: none;
+}
+
+.buscador input:focus {
+  border-color: var(--primario);
+}
+
+.lista-personas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.persona {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.persona:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.persona.eres-tu {
+  border: 2px solid var(--secundario);
+  background: #F0FFFC;
+}
+
+.avatar {
+  font-size: 1.8rem;
+  position: relative;
+}
+
+.punto-estado {
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.punto-estado.en-linea {
+  background: #22C55E;
+}
+
+.info-persona {
+  flex: 1;
+}
+
+.nombre-persona {
+  font-weight: 600

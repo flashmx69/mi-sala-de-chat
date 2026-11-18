@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sala — Sala de Amigas</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="pagina-sala">
+  <header class="barra-superior">
+    <h1 class="logo">Sala de Amigas ✨</h1>
+    <div class="info-usuario">
+      <span id="nombreUsuario">Tú</span>
+      <a href="index.html" class="boton-salir">Salir</a>
+    </div>
+  </header>
+
+  <main class="contenido">
+    <h2>¡Bienvenida, <span id="saludoNombre">amiga</span>! 👋</h2>
+    <p class="descripcion">Amigas conectadas en este momento</p>
+    
+    <div class="buscador">
+      <input type="text" id="buscar" placeholder="🔍 Buscar por nombre...">
+    </div>
+    
+    <div class="lista-personas" id="listaPersonas">
+      <!-- Aquí aparecerán las amigas automáticamente -->
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

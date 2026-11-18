@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat — Sala de Amigas</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="pagina-chat">
+  <header class="barra-chat">
+    <a href="sala.html" class="boton-volver">←</a>
+    <div class="info-amiga">
+      <span class="avatar-grande" id="avatarAmiga">👩</span>
+      <div>
+        <h3 id="nombreAmiga">Amiga</h3>
+        <p class="estado">🟢 En línea</p>
+      </div>
+    </div>
+    <a href="videollamada.html" class="boton-llamada">📹</a>
+  </header>
+
+  <div class="caja-mensajes" id="cajaMensajes">
+    <!-- Los mensajes aparecen aquí -->
+  </div>
+  
+  <p class="escribiendo" id="indicadorEscribiendo">✍️ Alguien está escribiendo...</p>
+
+  <form class="barra-escribir" id="formMensaje">
+    <input type="text" id="entradaMensaje" placeholder="Escribe tu mensaje...">
+    <button type="submit">➤</button>
+  </form>
+
+  <script src="app.js"></script>
+</body>
+</html>
