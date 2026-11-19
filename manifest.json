@@ -2,7 +2,7 @@
   "name": "Sala de Amigas",
   "short_name": "Amigas",
   "description": "Chatea y haz videollamadas con tus amigas",
-  "start_url": "./index.html",
+  "start_url": "./ ",
   "display": "standalone",
   "background_color": "#FFF7F0",
   "theme_color": "#FF7E67",
