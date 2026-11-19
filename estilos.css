@@ -92,7 +92,7 @@ input { font-family: inherit; border: none; outline: none; }
 .barra-chat { background: white; padding: 10px 16px; display: flex; align-items: center; gap: 10px; box-shadow: var(--sombra); flex-shrink: 0; }
 .boton-volver { width: 36px; height: 36px; border-radius: 50%; background: var(--fondo); display: flex; align-items: center; justify-content: center; font-size: 16px; }
 .info-amiga { display: flex; align-items: center; gap: 10px; flex: 1; }
-.avatar-grande { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #FFD166, var(--primario)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.avatar-grande { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #FFD166, var(--primario)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; 
 .info-amiga h3 { font-size: 0.95rem; }
 .estado { font-size: 0.8rem; color: #4CAF50; }
-.boton-llamada { width: 38px; height: 38px; border-radius: 50%; background: var(--secundario); color: white; display: flex; align-items: center; justify-content: center; font
+.boton-llamada { width: 38px; height: 38px; border-radius: 50%; background: var(--secundario); color: white; display: flex; align-items: center; justify-content: center; font-family: 'Quicksand', 'Segoe UI', sans-serif; font-family: 'Quicksand', 'Segoe UI', sans-serif; }
