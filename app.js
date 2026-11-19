@@ -2,11 +2,11 @@
 // SALA DE AMIGAS — Con Supabase Real
 // =====================================================
 
-// ---------- TU CONFIGURACIÓN DE SUPABASE ----------
+// ---------- CONFIGURACIÓN ----------
 const SUPABASE_URL = 'https://dkgnxbsvvbceaaoigexj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_jRyyfbNuESxhU_TGhqKBgg_8VbxcjCZ';
 
-// Inicializar Supabase
+// Inicializar Supabase UNA SOLA VEZ
 const { createClient } = supabase;
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -19,21 +19,19 @@ if (!userId) {
 }
 let amigaActual = null;
 let chatIdActual = null;
-
-// Detectar página
 const pagina = window.location.pathname.split('/').pop() || 'index.html';
 
-// Generar ID único para cada chat
 function generarChatId(id1, id2) {
   return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
 }
 
-// Correo válido
 function correoValido(texto) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texto);
 }
 
-// ---------- PÁGINA: login.html ----------
+// =====================================================
+// PÁGINA: login.html
+// =====================================================
 if (pagina === 'login.html') {
   const btnEntrar = document.getElementById('btnEntrar');
   const btnRegistrarse = document.getElementById('btnRegistrarse');
@@ -121,7 +119,9 @@ if (pagina === 'login.html') {
   }
 }
 
-// ---------- PÁGINA: sala.html — USUARIOS REALES ----------
+// =====================================================
+// PÁGINA: sala.html
+// =====================================================
 if (pagina === 'sala.html') {
   const nombreUsuarioEl = document.getElementById('nombreUsuario');
   const saludoNombre = document.getElementById('saludoNombre');
@@ -129,12 +129,10 @@ if (pagina === 'sala.html') {
   const buscador = document.getElementById('buscar');
   
   let filtroBuscar = '';
-  let suscripcionConectados = null;
 
   if (nombreUsuarioEl) nombreUsuarioEl.textContent = nombreUsuario;
   if (saludoNombre) saludoNombre.textContent = nombreUsuario;
 
-  // Registrarme como conectada
   async function actualizarMiEstado(enLinea) {
     await supabase.from('conectados').upsert({
       id: userId,
@@ -144,27 +142,12 @@ if (pagina === 'sala.html') {
     });
   }
 
-  // Cuando entro → marcarme conectada
   actualizarMiEstado(true);
 
-  // Cuando salgo → marcarme desconectada
   window.addEventListener('beforeunload', () => {
     supabase.from('conectados').update({ en_linea: false }).eq('id', userId);
   });
 
-  // Escuchar cambios en tiempo real
-  async function escucharConectados() {
-    suscripcionConectados = supabase
-      .channel('public:conectados')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'conectados' }, () => {
-        cargarConectados();
-      })
-      .subscribe();
-    
-    cargarConectados();
-  }
-
-  // Cargar lista de conectados
   async function cargarConectados() {
     const hace5Minutos = new Date(Date.now() - 5 * 60 * 1000).toISOString();
     const { data, error } = await supabase
@@ -173,15 +156,10 @@ if (pagina === 'sala.html') {
       .eq('en_linea', true)
       .gte('ultima_vez', hace5Minutos);
 
-    if (error) {
-      console.error('Error:', error);
-      return;
-    }
-
+    if (error) return console.error('Error:', error);
     dibujarSala(data || []);
   }
 
-  // Dibujar la sala
   function dibujarSala(personas) {
     if (!listaPersonas) return;
     listaPersonas.innerHTML = '';
@@ -224,7 +202,6 @@ if (pagina === 'sala.html') {
     });
   }
 
-  // Buscador
   if (buscador) {
     buscador.addEventListener('input', e => {
       filtroBuscar = e.target.value;
@@ -232,34 +209,34 @@ if (pagina === 'sala.html') {
     });
   }
 
-  // Mantener mi estado actualizado
   setInterval(() => actualizarMiEstado(true), 15000);
 
-  escucharConectados();
+  supabase.channel('public:conectados')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'conectados' }, cargarConectados)
+    .subscribe();
+  
+  cargarConectados();
 }
 
-// ---------- PÁGINA: chat.html — MENSAJES REALES ----------
+// =====================================================
+// PÁGINA: chat.html
+// =====================================================
 if (pagina === 'chat.html') {
   const guardada = localStorage.getItem('amigaActual');
   chatIdActual = localStorage.getItem('chatIdActual');
-  
   if (guardada) amigaActual = JSON.parse(guardada);
 
   const avatarAmiga = document.getElementById('avatarAmiga');
   const nombreAmiga = document.getElementById('nombreAmiga');
   const cajaMensajes = document.getElementById('cajaMensajes');
-  const indicadorEscribiendo = document.getElementById('indicadorEscribiendo');
   const formMensaje = document.getElementById('formMensaje');
   const entradaMensaje = document.getElementById('entradaMensaje');
-
-  let suscripcionMensajes = null;
 
   if (amigaActual) {
     if (avatarAmiga) avatarAmiga.textContent = '👩';
     if (nombreAmiga) nombreAmiga.textContent = amigaActual.nombre;
   }
 
-  // Agregar mensaje a pantalla
   function agregarMensaje(datos) {
     if (!cajaMensajes) return;
     const div = document.createElement('div');
@@ -275,10 +252,8 @@ if (pagina === 'chat.html') {
     cajaMensajes.scrollTop = cajaMensajes.scrollHeight;
   }
 
-  // Cargar historial de mensajes
   async function cargarMensajes() {
     if (!chatIdActual) return;
-    
     const { data, error } = await supabase
       .from('mensajes')
       .select('*')
@@ -289,26 +264,6 @@ if (pagina === 'chat.html') {
     (data || []).forEach(agregarMensaje);
   }
 
-  // Escuchar mensajes nuevos en tiempo real
-  function escucharMensajes() {
-    if (!chatIdActual) return;
-    
-    suscripcionMensajes = supabase
-      .channel(chatIdActual)
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'mensajes',
-        filter: `chat_id=eq.${chatIdActual}`
-      }, (payload) => {
-        agregarMensaje(payload.new);
-      })
-      .subscribe();
-    
-    cargarMensajes();
-  }
-
-  // Enviar mensaje real
   if (formMensaje && entradaMensaje) {
     formMensaje.addEventListener('submit', async e => {
       e.preventDefault();
@@ -327,10 +282,23 @@ if (pagina === 'chat.html') {
     });
   }
 
-  escucharMensajes();
+  if (chatIdActual) {
+    supabase.channel(chatIdActual)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'mensajes',
+        filter: `chat_id=eq.${chatIdActual}`
+      }, (payload) => agregarMensaje(payload.new))
+      .subscribe();
+    
+    cargarMensajes();
+  }
 }
 
-// ---------- PÁGINA: videollamada.html ----------
+// =====================================================
+// PÁGINA: videollamada.html
+// =====================================================
 if (pagina === 'videollamada.html') {
   const miCamara = document.getElementById('miCamara');
   const sinCamara = document.getElementById('sinCamara');
@@ -351,10 +319,7 @@ if (pagina === 'videollamada.html') {
     }
 
     try {
-      streamCamara = await navigator.mediaDevices.getUserMedia({ 
-        video: true, 
-        audio: true 
-      });
+      streamCamara = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       if (miCamara) {
         miCamara.srcObject = streamCamara;
         miCamara.style.display = 'block';
@@ -395,4 +360,4 @@ if (pagina === 'videollamada.html') {
   iniciarCamara();
 }
 
-console.log('✅ Sala de Amigas — Conectada y lista para usar');
+console.log('✅ Sala de Amigas — Conectada y lista');
