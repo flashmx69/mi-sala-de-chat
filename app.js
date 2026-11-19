@@ -1,44 +1,34 @@
 // =====================================================
-// app.js · LÓGICA COMPLETA
-// Funciona con: index.html, login.html, sala.html, chat.html, videollamada.html
+// SALA DE AMIGAS — Con Supabase Real
 // =====================================================
 
-// ---------- DATOS COMPARTIDOS ----------
-let nombreUsuario = 'Tú';
+// ---------- TU CONFIGURACIÓN DE SUPABASE ----------
+const SUPABASE_URL = 'https://dkgnxbsvvbceaaoigexj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_jRyyfbNuESxhU_TGhqKBgg_8VbxcjCZ';
+
+// Inicializar Supabase
+const { createClient } = supabase;
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ---------- VARIABLES GLOBALES ----------
+let nombreUsuario = localStorage.getItem('nombreUsuario') || 'Anónima';
+let userId = localStorage.getItem('userId');
+if (!userId) {
+  userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+  localStorage.setItem('userId', userId);
+}
 let amigaActual = null;
-let streamCamara = null;
-let segundosLlamada = 0;
-let timerLlamada = null;
-let micSilenciado = false;
-let camaraApagada = false;
+let chatIdActual = null;
 
-const baseAmigas = [
-  { nombre: 'María González',   avatar: '👩‍🦱', estado: 'en-linea' },
-  { nombre: 'Ana Pérez',        avatar: '👩‍🦰', estado: 'en-linea' },
-  { nombre: 'Luisa Fernández',  avatar: '👩',    estado: 'ocupada' },
-  { nombre: 'Carmen Ruiz',      avatar: '👩‍🦳', estado: 'ausente' },
-  { nombre: 'Sofía Martínez',   avatar: '👱‍♀️', estado: 'en-linea' },
-  { nombre: 'Laura Gómez',      avatar: '👩‍🎤', estado: 'desconectada' },
-  { nombre: 'Daniela Torres',   avatar: '👩‍🔬', estado: 'en-linea' },
-  { nombre: 'Valeria Jiménez',  avatar: '👩‍🎨', estado: 'ocupada' },
-  { nombre: 'Andrea López',     avatar: '🧑‍🦰', estado: 'ausente' },
-  { nombre: 'Patricia Sánchez', avatar: '👩‍🏫', estado: 'en-linea' },
-];
-let usuarias = baseAmigas.map(u => ({ ...u }));
-let filtroBuscar = '';
-
-const respuestasChat = [
-  '¡Hola! ¿Cómo estás? 😊', '¡Qué bueno saber de ti!',
-  'Jajaja, qué gracioso 😂', 'Cuéntame más...',
-  '¡Sí, total! 💕', 'Estoy de acuerdo contigo',
-  '¿Viste lo que pasó ayer? 😮', '¡Te extrañaba! 🥰',
-  '¿Quedamos mañana? ✨', '¡Aww, qué lindo! 🥺',
-];
-
-// ---------- DETECTAR EN QUÉ PÁGINA ESTAMOS ----------
+// Detectar página
 const pagina = window.location.pathname.split('/').pop() || 'index.html';
 
-// ---------- FUNCIÓN: VALIDAR CORREO ----------
+// Generar ID único para cada chat
+function generarChatId(id1, id2) {
+  return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+}
+
+// Correo válido
 function correoValido(texto) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texto);
 }
@@ -51,10 +41,7 @@ if (pagina === 'login.html') {
   const formRegistro = document.getElementById('formRegistro');
   const mensajeExito = document.getElementById('mensajeExito');
   const textoExito = document.getElementById('textoExito');
-  const btnOjo = document.getElementById('btnOjo');
-  const btnOjo2 = document.getElementById('btnOjo2');
 
-  // Cambiar pestaña: Entrar / Registrarse
   if (btnEntrar && btnRegistrarse) {
     btnEntrar.addEventListener('click', () => {
       btnEntrar.classList.add('activa');
@@ -63,7 +50,6 @@ if (pagina === 'login.html') {
       formRegistro.classList.remove('visible');
       mensajeExito.classList.remove('visible');
     });
-
     btnRegistrarse.addEventListener('click', () => {
       btnRegistrarse.classList.add('activa');
       btnEntrar.classList.remove('activa');
@@ -73,7 +59,6 @@ if (pagina === 'login.html') {
     });
   }
 
-  // Mostrar/ocultar contraseña
   function configurarOjo(botonId, inputId) {
     const boton = document.getElementById(botonId);
     const input = document.getElementById(inputId);
@@ -87,23 +72,16 @@ if (pagina === 'login.html') {
   configurarOjo('btnOjo', 'clave');
   configurarOjo('btnOjo2', 'claveReg');
 
-  // Mostrar/ocultar errores
   function mostrarError(elementoId, errorId, hayError) {
     const el = document.getElementById(elementoId);
     const err = document.getElementById(errorId);
     if (el && err) {
-      if (hayError) {
-        el.classList.add('error');
-        err.classList.add('visible');
-        return false;
-      }
-      el.classList.remove('error');
-      err.classList.remove('visible');
+      el.classList.toggle('error', hayError);
+      err.classList.toggle('visible', hayError);
     }
-    return true;
+    return !hayError;
   }
 
-  // Inicio de sesión
   if (formEntrar) {
     formEntrar.addEventListener('submit', e => {
       e.preventDefault();
@@ -114,15 +92,14 @@ if (pagina === 'login.html') {
       
       if (ok1 && ok2) {
         nombreUsuario = correo.split('@')[0];
-        textoExito.textContent = `¡Hola ${nombreUsuario}! Ya puedes entrar a la sala.`;
-        mensajeExito.classList.add('visible');
-        // Guardar nombre en el navegador para usarlo en la sala
         localStorage.setItem('nombreUsuario', nombreUsuario);
+        textoExito.textContent = `¡Hola ${nombreUsuario}! Conectando...`;
+        mensajeExito.classList.add('visible');
+        setTimeout(() => window.location.href = 'sala.html', 800);
       }
     });
   }
 
-  // Registro
   if (formRegistro) {
     formRegistro.addEventListener('submit', e => {
       e.preventDefault();
@@ -135,67 +112,114 @@ if (pagina === 'login.html') {
       
       if (ok1 && ok2 && ok3) {
         nombreUsuario = nombre;
-        textoExito.textContent = `¡Cuenta creada, ${nombre}! Bienvenida.`;
-        mensajeExito.classList.add('visible');
         localStorage.setItem('nombreUsuario', nombreUsuario);
+        textoExito.textContent = `¡Bienvenida, ${nombre}! 🎉`;
+        mensajeExito.classList.add('visible');
+        setTimeout(() => window.location.href = 'sala.html', 800);
       }
     });
   }
 }
 
-// ---------- PÁGINA: sala.html ----------
+// ---------- PÁGINA: sala.html — USUARIOS REALES ----------
 if (pagina === 'sala.html') {
-  // Recuperar nombre del usuario
-  const guardado = localStorage.getItem('nombreUsuario');
-  if (guardado) nombreUsuario = guardado;
-  
   const nombreUsuarioEl = document.getElementById('nombreUsuario');
   const saludoNombre = document.getElementById('saludoNombre');
   const listaPersonas = document.getElementById('listaPersonas');
   const buscador = document.getElementById('buscar');
+  
+  let filtroBuscar = '';
+  let suscripcionConectados = null;
 
   if (nombreUsuarioEl) nombreUsuarioEl.textContent = nombreUsuario;
   if (saludoNombre) saludoNombre.textContent = nombreUsuario;
 
-  // Dibujar la lista de personas conectadas
-  function dibujarSala() {
+  // Registrarme como conectada
+  async function actualizarMiEstado(enLinea) {
+    await supabase.from('conectados').upsert({
+      id: userId,
+      nombre: nombreUsuario,
+      en_linea: enLinea,
+      ultima_vez: new Date().toISOString()
+    });
+  }
+
+  // Cuando entro → marcarme conectada
+  actualizarMiEstado(true);
+
+  // Cuando salgo → marcarme desconectada
+  window.addEventListener('beforeunload', () => {
+    supabase.from('conectados').update({ en_linea: false }).eq('id', userId);
+  });
+
+  // Escuchar cambios en tiempo real
+  async function escucharConectados() {
+    suscripcionConectados = supabase
+      .channel('public:conectados')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'conectados' }, () => {
+        cargarConectados();
+      })
+      .subscribe();
+    
+    cargarConectados();
+  }
+
+  // Cargar lista de conectados
+  async function cargarConectados() {
+    const hace5Minutos = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+    const { data, error } = await supabase
+      .from('conectados')
+      .select('*')
+      .eq('en_linea', true)
+      .gte('ultima_vez', hace5Minutos);
+
+    if (error) {
+      console.error('Error:', error);
+      return;
+    }
+
+    dibujarSala(data || []);
+  }
+
+  // Dibujar la sala
+  function dibujarSala(personas) {
     if (!listaPersonas) return;
     listaPersonas.innerHTML = '';
 
-    const conectadas = [
-      { nombre: nombreUsuario + ' (tú)', avatar: '👩‍🦰', soyYo: true },
-      ...usuarias.filter(u => u.estado === 'en-linea')
-    ].filter(u => u.nombre.toLowerCase().includes(filtroBuscar.toLowerCase()));
+    const personasFiltradas = personas
+      .filter(p => p.id !== userId)
+      .filter(p => p.nombre.toLowerCase().includes(filtroBuscar.toLowerCase()));
 
-    if (conectadas.length === 0) {
+    if (personasFiltradas.length === 0) {
       listaPersonas.innerHTML = `
-        <div style="text-align:center; padding:40px; color:#888;">
-          😴 Nadie está conectada ahora mismo
+        <div style="text-align:center; padding:60px 20px; color:#888;">
+          😴 Nadie más está conectado ahora mismo<br>
+          <small>¡Comparte tu enlace con tus amigas para chatear de verdad!</small>
         </div>`;
       return;
     }
 
-    conectadas.forEach(u => {
+    personasFiltradas.forEach(p => {
       const div = document.createElement('div');
-      div.className = `persona${u.soyYo ? ' eres-tu' : ''}`;
+      div.className = 'persona';
       div.innerHTML = `
         <div class="avatar">
-          ${u.avatar}
+          👩
           <span class="punto-estado en-linea"></span>
         </div>
         <div class="info-persona">
-          <div class="nombre-persona">${u.nombre}</div>
-          <div class="estado-persona">🟢 Conectada</div>
+          <div class="nombre-persona">${p.nombre}</div>
+          <div class="estado-persona">🟢 Conectada ahora</div>
         </div>
         <span style="color:#ccc; font-weight:bold;">›</span>
       `;
-      if (!u.soyYo) {
-        div.addEventListener('click', () => {
-          amigaActual = u;
-          localStorage.setItem('amigaActual', JSON.stringify(u));
-          window.location.href = 'chat.html';
-        });
-      }
+      div.addEventListener('click', () => {
+        amigaActual = p;
+        chatIdActual = generarChatId(userId, p.id);
+        localStorage.setItem('amigaActual', JSON.stringify(p));
+        localStorage.setItem('chatIdActual', chatIdActual);
+        window.location.href = 'chat.html';
+      });
       listaPersonas.appendChild(div);
     });
   }
@@ -204,30 +228,21 @@ if (pagina === 'sala.html') {
   if (buscador) {
     buscador.addEventListener('input', e => {
       filtroBuscar = e.target.value;
-      dibujarSala();
+      cargarConectados();
     });
   }
 
-  // Cambio de estado automático
-  setInterval(() => {
-    if (usuarias.length === 0) return;
-    const cual = Math.floor(Math.random() * usuarias.length);
-    const estados = ['en-linea', 'ocupada', 'ausente', 'desconectada'];
-    let nuevo;
-    do {
-      nuevo = estados[Math.floor(Math.random() * estados.length)];
-    } while (nuevo === usuarias[cual].estado);
-    usuarias[cual].estado = nuevo;
-    dibujarSala();
-  }, 5000);
+  // Mantener mi estado actualizado
+  setInterval(() => actualizarMiEstado(true), 15000);
 
-  dibujarSala();
+  escucharConectados();
 }
 
-// ---------- PÁGINA: chat.html ----------
+// ---------- PÁGINA: chat.html — MENSAJES REALES ----------
 if (pagina === 'chat.html') {
-  // Recuperar datos de la amiga
   const guardada = localStorage.getItem('amigaActual');
+  chatIdActual = localStorage.getItem('chatIdActual');
+  
   if (guardada) amigaActual = JSON.parse(guardada);
 
   const avatarAmiga = document.getElementById('avatarAmiga');
@@ -237,139 +252,147 @@ if (pagina === 'chat.html') {
   const formMensaje = document.getElementById('formMensaje');
   const entradaMensaje = document.getElementById('entradaMensaje');
 
-  if (amigaActual && nombreAmiga) {
-    if (avatarAmiga) avatarAmiga.textContent = amigaActual.avatar;
+  let suscripcionMensajes = null;
+
+  if (amigaActual) {
+    if (avatarAmiga) avatarAmiga.textContent = '👩';
     if (nombreAmiga) nombreAmiga.textContent = amigaActual.nombre;
   }
 
-  // Agregar mensaje al chat
-  function agregarMensaje(texto, tipo) {
+  // Agregar mensaje a pantalla
+  function agregarMensaje(datos) {
     if (!cajaMensajes) return;
     const div = document.createElement('div');
-    div.className = `mensaje ${tipo}`;
-    const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const esMio = datos.de === userId;
+    div.className = `mensaje ${esMio ? 'enviado' : 'recibido'}`;
+    
+    const hora = new Date(datos.hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     div.innerHTML = `
-      <div class="texto-mensaje">${texto}</div>
+      <div class="texto-mensaje">${datos.texto}</div>
       <div class="hora-mensaje">${hora}</div>
     `;
     cajaMensajes.appendChild(div);
     cajaMensajes.scrollTop = cajaMensajes.scrollHeight;
   }
 
-  // Mensaje de bienvenida
-  agregarMensaje('¡Hola! Qué gusto verte 👋', 'recibido');
+  // Cargar historial de mensajes
+  async function cargarMensajes() {
+    if (!chatIdActual) return;
+    
+    const { data, error } = await supabase
+      .from('mensajes')
+      .select('*')
+      .eq('chat_id', chatIdActual)
+      .order('hora', { ascending: true });
 
-  // Enviar mensaje
+    if (error) return console.error('Error:', error);
+    (data || []).forEach(agregarMensaje);
+  }
+
+  // Escuchar mensajes nuevos en tiempo real
+  function escucharMensajes() {
+    if (!chatIdActual) return;
+    
+    suscripcionMensajes = supabase
+      .channel(chatIdActual)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'mensajes',
+        filter: `chat_id=eq.${chatIdActual}`
+      }, (payload) => {
+        agregarMensaje(payload.new);
+      })
+      .subscribe();
+    
+    cargarMensajes();
+  }
+
+  // Enviar mensaje real
   if (formMensaje && entradaMensaje) {
-    formMensaje.addEventListener('submit', e => {
+    formMensaje.addEventListener('submit', async e => {
       e.preventDefault();
       const texto = entradaMensaje.value.trim();
-      if (!texto) return;
+      if (!texto || !chatIdActual) return;
       
-      agregarMensaje(texto, 'enviado');
       entradaMensaje.value = '';
       
-      // Simular que está escribiendo
-      if (indicadorEscribiendo) indicadorEscribiendo.style.display = 'block';
-      
-      setTimeout(() => {
-        if (indicadorEscribiendo) indicadorEscribiendo.style.display = 'none';
-        const respuesta = respuestasChat[Math.floor(Math.random() * respuestasChat.length)];
-        agregarMensaje(respuesta, 'recibido');
-      }, 1500);
+      await supabase.from('mensajes').insert({
+        chat_id: chatIdActual,
+        de: userId,
+        de_nombre: nombreUsuario,
+        texto: texto,
+        hora: new Date().toISOString()
+      });
     });
   }
+
+  escucharMensajes();
 }
 
 // ---------- PÁGINA: videollamada.html ----------
 if (pagina === 'videollamada.html') {
   const miCamara = document.getElementById('miCamara');
-  const mensajeSinCamara = document.getElementById('mensajeSinCamara');
+  const sinCamara = document.getElementById('sinCamara');
   const tiempo = document.getElementById('tiempo');
   const btnMicrofono = document.getElementById('btnMicrofono');
   const btnCamara = document.getElementById('btnCamara');
-  const avatarRemoto = document.getElementById('avatarRemoto');
-  const nombreRemoto = document.getElementById('nombreRemoto');
 
-  // Mostrar datos de la amiga
-  const guardada = localStorage.getItem('amigaActual');
-  if (guardada) amigaActual = JSON.parse(guardada);
-  if (amigaActual) {
-    if (avatarRemoto) avatarRemoto.textContent = amigaActual.avatar;
-    if (nombreRemoto) nombreRemoto.textContent = amigaActual.nombre;
-  }
+  let streamCamara = null;
+  let segundos = 0;
+  let cronometro = null;
+  let audioActivo = true;
+  let videoActivo = true;
 
-  // Iniciar cámara
   async function iniciarCamara() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      if (mensajeSinCamara) mensajeSinCamara.innerHTML = '📷 Tu navegador no soporta cámara<br><small>Usa Chrome, Edge o Firefox</small>';
+      if (sinCamara) sinCamara.style.display = 'flex';
       return;
     }
 
     try {
       streamCamara = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'user' }, 
+        video: true, 
         audio: true 
       });
-      if (miCamara) miCamara.srcObject = streamCamara;
-      if (mensajeSinCamara) mensajeSinCamara.style.display = 'none';
-      if (miCamara) miCamara.style.display = 'block';
+      if (miCamara) {
+        miCamara.srcObject = streamCamara;
+        miCamara.style.display = 'block';
+      }
+      if (sinCamara) sinCamara.style.display = 'none';
       
-      // Iniciar contador de tiempo
-      segundosLlamada = 0;
-      actualizarTiempo();
-      timerLlamada = setInterval(() => {
-        segundosLlamada++;
-        actualizarTiempo();
+      cronometro = setInterval(() => {
+        segundos++;
+        const m = String(Math.floor(segundos / 60)).padStart(2, '0');
+        const s = String(segundos % 60).padStart(2, '0');
+        if (tiempo) tiempo.textContent = `${m}:${s}`;
       }, 1000);
     } catch (err) {
-      console.log('Sin permiso de cámara:', err);
-      if (mensajeSinCamara) mensajeSinCamara.style.display = 'flex';
+      if (sinCamara) sinCamara.style.display = 'flex';
     }
   }
 
-  function actualizarTiempo() {
-    if (!tiempo) return;
-    const m = String(Math.floor(segundosLlamada / 60)).padStart(2, '0');
-    const s = String(segundosLlamada % 60).padStart(2, '0');
-    tiempo.textContent = `${m}:${s}`;
-  }
-
-  // Silenciar micrófono
   if (btnMicrofono) {
     btnMicrofono.addEventListener('click', () => {
-      micSilenciado = !micSilenciado;
-      btnMicrofono.classList.toggle('activo', micSilenciado);
-      btnMicrofono.textContent = micSilenciado ? '🔇' : '🎤';
+      audioActivo = !audioActivo;
+      btnMicrofono.textContent = audioActivo ? '🎤' : '🔇';
       if (streamCamara) {
-        streamCamara.getAudioTracks().forEach(t => t.enabled = !micSilenciado);
+        streamCamara.getAudioTracks().forEach(t => t.enabled = audioActivo);
       }
     });
   }
 
-  // Apagar/encender cámara
   if (btnCamara) {
     btnCamara.addEventListener('click', () => {
-      camaraApagada = !camaraApagada;
-      btnCamara.classList.toggle('activo', camaraApagada);
-      btnCamara.textContent = camaraApagada ? '📷' : '📹';
+      videoActivo = !videoActivo;
+      btnCamara.textContent = videoActivo ? '📹' : '📷';
       if (streamCamara) {
-        streamCamara.getVideoTracks().forEach(t => t.enabled = !camaraApagada);
-      }
-      if (mensajeSinCamara && miCamara) {
-        mensajeSinCamara.style.display = camaraApagada ? 'flex' : 'none';
-        miCamara.style.display = camaraApagada ? 'none' : 'block';
+        streamCamara.getVideoTracks().forEach(t => t.enabled = videoActivo);
       }
     });
   }
 
-  // Iniciar automáticamente
   iniciarCamara();
 }
 
-// ---------- PWA: Service Worker ----------
-if ('serviceWorker' in navigator && pagina === 'index.html') {
-  navigator.serviceWorker.register('service-worker.js').catch(() => {});
-}
-
-console.log('✅ Sala de Amigas cargada correctamente');
+console.log('✅ Sala de Amigas — Conectada y lista para usar');

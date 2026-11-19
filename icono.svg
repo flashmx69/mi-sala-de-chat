@@ -1,14 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FF7E67"/>
-      <stop offset="100%" stop-color="#FFD166"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><defs>
+    <linearGradient id="fondo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF7E67"></stop>
+      <stop offset="100%" stop-color="#FFB74D"></stop>
     </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="110" fill="url(#g)"/>
-  <circle cx="256" cy="210" r="70" fill="#fff"/>
-  <path d="M130 380c0-70 56-120 126-120s126 50 126 120v20H130v-20z" fill="#fff"/>
-  <circle cx="232" cy="200" r="10" fill="#FF7E67"/>
-  <circle cx="280" cy="200" r="10" fill="#FF7E67"/>
-  <path d="M225 235q31 24 62 0" stroke="#FF7E67" stroke-width="10" fill="none" stroke-linecap="round"/>
-</svg>
+    <linearGradient id="corazon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"></stop>
+      <stop offset="100%" stop-color="#ffe0e0"></stop>
+    </linearGradient>
+  </defs><circle cx="256" cy="256" r="240" fill="url(#fondo)"></circle><path d="M256 420c-15-13-29-26-43-39-54-50-90-83-90-129 0-36 27-63 63-63 32 0 50 24 70 45 20-21 38-45 70-45 36 0 63 27 63 63 0 46-36 79-90 129-14 13-28 26-43 39z" fill="url(#corazon)"></path><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>

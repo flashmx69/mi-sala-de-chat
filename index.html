@@ -3,38 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sala de Amigas ✨</title>
+  <meta name="theme-color" content="#FF7E67">
+  <link rel="manifest" href="manifest.json">
+  <title>Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
+
+<!-- PWA → Botón de instalar -->
+<script>
+  let eventoInstalar;
+  const botonInstalar = {
+    mostrar: function() {
+      const boton = document.createElement('button');
+      boton.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+        padding: 12px 20px; background: #FF7E67; color: white; border: none;
+        border-radius: 50px; font-size: 14px; font-weight: 600; cursor: pointer;
+        box-shadow: 0 4px 12px rgba(255,126,103,0.3);
+      `;
+      boton.innerHTML = '📲 Instalar App';
+      boton.onclick = () => {
+        if (eventoInstalar) {
+          eventoInstalar.prompt();
+          eventoInstalar.userChoice.then(respuesta => {
+            if (respuesta.outcome === 'accepted') {
+              console.log('✅ App instalada');
+            }
+            eventoInstalar = null;
+          });
+        }
+      };
+      document.body.appendChild(boton);
+    }
+  };
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    eventoInstalar = e;
+    botonInstalar.mostrar();
+  });
+</script>
+
 </head>
 <body class="pagina-inicio">
   <div class="contenedor-inicio">
-    <h1 class="titulo-principal">Sala de Amigas ✨</h1>
-    <p class="subtitulo">Un espacio para estar cerca</p>
+    <h1 class="titulo-principal">🌸 Sala de Amigas</h1>
+    <p class="subtitulo">Conéctate y charla con quienes más quieres ✨</p>
     
     <div class="botones-inicio">
       <a href="login.html" class="boton-principal">Iniciar Sesión</a>
-      <a href="login.html#registro" class="boton-secundario">Crear Cuenta</a>
+      <a href="login.html" class="boton-secundario">Registrarme</a>
     </div>
     
     <div class="caracteristicas">
-      <div class="item">💬 Mensajes</div>
+      <div class="item">💬 Chats reales</div>
       <div class="item">📹 Videollamadas</div>
       <div class="item">🔒 Seguro</div>
     </div>
   </div>
-  
+
   <script>
-// Registrar Service Worker para la PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(registro => console.log('✅ SW registrado:', registro.scope))
-      .catch(err => console.log('⚠️ Error SW:', err));
-  });
-}
-</script>
-
-
-
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>

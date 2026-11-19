@@ -3,31 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Videollamada — Sala de Amigas</title>
+  <title>Videollamada</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body class="pagina-videollamada">
-  <div class="camaras">
-    <div class="camara-remota">
-      <div class="avatar-llamada" id="avatarRemoto">👩</div>
-      <p class="nombre-remoto" id="nombreRemoto">Amiga</p>
-    </div>
-    
-    <div class="camara-propia">
-      <video id="miCamara" autoplay muted playsinline></video>
-      <div class="sin-camara" id="mensajeSinCamara">
-        📷<br><small>Permite acceso a cámara y micrófono</small>
-      </div>
-      <p class="nombre-propio">Tú</p>
-    </div>
+  <div class="caja-video-remota">
+    <div class="avatar-remoto" id="avatarRemoto">👩</div>
+    <p class="nombre-remoto" id="nombreRemoto">Amiga</p>
   </div>
-  
-  <p class="tiempo-llamada" id="tiempo">00:00</p>
-  
-  <div class="controles">
+
+  <div class="caja-video-propia">
+    <video id="miCamara" autoplay playsinline muted></video>
+    <div class="sin-camara" id="sinCamara">📷 Iniciando cámara...</div>
+  </div>
+
+  <p class="tiempo" id="tiempo">00:00</p>
+
+  <div class="controles-llamada">
     <button class="control" id="btnMicrofono">🎤</button>
+    <a href="chat.html" class="control colgar">✕</a>
     <button class="control" id="btnCamara">📹</button>
-    <a href="chat.html" class="control colgar">📞</a>
   </div>
 
   <script src="app.js"></script>

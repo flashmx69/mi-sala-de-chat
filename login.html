@@ -3,32 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar — Sala de Amigas</title>
+  <title>Iniciar Sesión</title>
   <link rel="stylesheet" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body class="pagina-login">
-  <div class="burbuja b1"></div><div class="burbuja b2"></div><div class="burbuja b3"></div>
-  
+  <div class="burbuja b1"></div>
+  <div class="burbuja b2"></div>
+  <div class="burbuja b3"></div>
+
   <div class="contenedor-login">
     <div class="lado-izquierdo">
-      <h2>¡Bienvenida de nuevo! ✨</h2>
-      <p>Chatea y haz videollamadas con tus personas favoritas.</p>
+      <h2>¡Bienvenida! 💕</h2>
+      <p>Conéctate con tus amigas en cualquier momento y desde cualquier lugar.</p>
       <div class="beneficios">
-        <p>💬 Mensajes instantáneos</p>
-        <p>📹 Videollamadas claras</p>
-        <p>🔒 100% privado</p>
+        <p>✅ Mensajes en tiempo real</p>
+        <p>✅ Videollamadas</p>
+        <p>✅ Gratis y seguro</p>
       </div>
-      <p class="enlace-inicio"><a href="index.html">← Volver al inicio</a></p>
+      <div class="enlace-inicio">
+        <a href="index.html">← Volver al inicio</a>
+      </div>
     </div>
-    
+
     <div class="lado-derecho">
-      <div class="pestanas">
-        <button class="pestana activa" id="btnEntrar">Entrar</button>
-        <button class="pestana" id="btnRegistrarse">Registrarse</button>
+      <div class="pestañas">
+        <button id="btnEntrar" class="pestaña activa">Entrar</button>
+        <button id="btnRegistrarse" class="pestaña">Registrarme</button>
       </div>
-      
-      <!-- Formulario Entrar -->
-      <form class="formulario visible" id="formEntrar">
+
+      <form id="formEntrar" class="formulario visible">
         <div class="campo">
           <label>Correo electrónico</label>
           <input type="email" id="correo" placeholder="tu@correo.com">
@@ -40,14 +44,13 @@
           <button type="button" class="ojito" id="btnOjo">👁️</button>
           <div class="error" id="errorClave">Mínimo 6 caracteres</div>
         </div>
-        <button type="submit" class="boton">Entrar 🚀</button>
+        <button type="submit" class="boton">Entrar</button>
       </form>
-      
-      <!-- Formulario Registro -->
-      <form class="formulario" id="formRegistro">
+
+      <form id="formRegistro" class="formulario">
         <div class="campo">
           <label>Tu nombre</label>
-          <input type="text" id="nombre" placeholder="Tu nombre">
+          <input type="text" id="nombre" placeholder="¿Cómo te llamas?">
           <div class="error" id="errorNombre">Escribe tu nombre</div>
         </div>
         <div class="campo">
@@ -61,18 +64,16 @@
           <button type="button" class="ojito" id="btnOjo2">👁️</button>
           <div class="error" id="errorClaveReg">Mínimo 6 caracteres</div>
         </div>
-        <button type="submit" class="boton">Crear cuenta ✨</button>
+        <button type="submit" class="boton">Crear cuenta</button>
       </form>
-      
-      <!-- Mensaje de éxito -->
+
       <div class="exito" id="mensajeExito">
-        <h3>¡Listo! ✅</h3>
+        <h3>🎉 ¡Listo!</h3>
         <p id="textoExito"></p>
-        <a href="sala.html" class="boton">Ir a la sala →</a>
       </div>
     </div>
   </div>
-  
+
   <script src="app.js"></script>
 </body>
 </html>

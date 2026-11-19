@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sala — Sala de Amigas</title>
+  <title>Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body class="pagina-sala">
-  <header class="barra-superior">
-    <h1 class="logo">Sala de Amigas ✨</h1>
+  <nav class="barra-superior">
+    <span class="logo">🌸 Sala</span>
     <div class="info-usuario">
       <span id="nombreUsuario">Tú</span>
-      <a href="index.html" class="boton-salir">Salir</a>
+      <a href="login.html" class="boton-salir">Salir</a>
     </div>
-  </header>
+  </nav>
 
   <main class="contenido">
-    <h2>¡Bienvenida, <span id="saludoNombre">amiga</span>! 👋</h2>
-    <p class="descripcion">Amigas conectadas en este momento</p>
-    
+    <h2>¡Hola, <span id="saludoNombre">amiga</span>! 👋</h2>
+    <p class="descripcion">Estas son las personas conectadas ahora mismo:</p>
+
     <div class="buscador">
-      <input type="text" id="buscar" placeholder="🔍 Buscar por nombre...">
+      <input type="text" id="buscar" placeholder="🔍 Buscar persona...">
     </div>
-    
+
     <div class="lista-personas" id="listaPersonas">
-      <!-- Aquí aparecerán las amigas automáticamente -->
+      <div style="text-align:center; padding:40px; color:#888;">Cargando...</div>
     </div>
   </main>
 

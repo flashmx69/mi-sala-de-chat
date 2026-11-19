@@ -3,30 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat — Sala de Amigas</title>
+  <title>Chat</title>
   <link rel="stylesheet" href="estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body class="pagina-chat">
-  <header class="barra-chat">
+  <div class="barra-chat">
     <a href="sala.html" class="boton-volver">←</a>
     <div class="info-amiga">
-      <span class="avatar-grande" id="avatarAmiga">👩</span>
+      <div class="avatar-grande" id="avatarAmiga">👩</div>
       <div>
         <h3 id="nombreAmiga">Amiga</h3>
-        <p class="estado">🟢 En línea</p>
+        <p class="estado">🟢 Conectada</p>
       </div>
     </div>
     <a href="videollamada.html" class="boton-llamada">📹</a>
-  </header>
-
-  <div class="caja-mensajes" id="cajaMensajes">
-    <!-- Los mensajes aparecen aquí -->
   </div>
-  
-  <p class="escribiendo" id="indicadorEscribiendo">✍️ Alguien está escribiendo...</p>
+
+  <div class="caja-mensajes" id="cajaMensajes"></div>
+  <p class="escribiendo" id="indicadorEscribiendo">escribiendo...</p>
 
   <form class="barra-escribir" id="formMensaje">
-    <input type="text" id="entradaMensaje" placeholder="Escribe tu mensaje...">
+    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje...">
     <button type="submit">➤</button>
   </form>
 
