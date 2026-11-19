@@ -1,30 +1,45 @@
 /* ======================================
-   ESTILOS GENERALES
+   ESTILOS GENERALES · Sala de Amigas
    ====================================== */
 :root {
   --fondo: #FFF7F0;
   --fondo-oscuro: #1E1B2E;
   --texto: #3D3550;
+  --texto-claro: #666172;
   --claro: #FFFFFF;
   --primario: #FF7E67;
+  --primario-oscuro: #E86A50;
   --secundario: #4ECDC4;
   --acento: #FFD166;
   --borde: #F0E6DC;
+  --borde-oscuro: #3D3858;
   --error: #E63946;
   --exito: #2EC4B6;
+  --en-linea: #2EC4B6;
+  --ocupada: #FF9F1C;
+  --ausente: #FFD166;
+  --desconectada: #C2BDD0;
+  --sombra-suave: 0 2px 8px rgba(0,0,0,0.05);
+  --sombra-media: 0 4px 16px rgba(255, 126, 103, 0.15);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Quicksand', sans-serif;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
+  font-family: 'Quicksand', sans-serif;
   background: var(--fondo);
   color: var(--texto);
-  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
 a {
@@ -36,60 +51,71 @@ button {
   cursor: pointer;
   border: none;
   font-family: inherit;
+  font-size: inherit;
+}
+
+input {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 /* ======================================
-   PÁGINA DE INICIO
+   PÁGINA DE INICIO · index.html
    ====================================== */
 .pagina-inicio {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
   text-align: center;
   padding: 20px;
 }
 
 .contenedor-inicio {
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
+  padding: 40px 20px;
 }
 
 .titulo-principal {
   font-family: 'Pacifico', cursive;
-  font-size: 2.5rem;
+  font-size: clamp(2.2rem, 6vw, 3rem);
   color: var(--primario);
   margin-bottom: 10px;
 }
 
 .subtitulo {
   font-size: 1.1rem;
-  color: #777;
+  color: var(--texto-claro);
   margin-bottom: 40px;
 }
 
 .botones-inicio {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
   margin-bottom: 50px;
 }
 
 .boton-principal, .boton-secundario, .boton {
-  padding: 14px 24px;
+  padding: 15px 24px;
   border-radius: 14px;
   font-size: 1rem;
   font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  display: inline-block;
+  text-align: center;
 }
 
 .boton-principal {
-  background: linear-gradient(135deg, var(--primario), #E86A50);
+  background: linear-gradient(135deg, var(--primario), var(--primario-oscuro));
   color: white;
+  box-shadow: 0 4px 14px rgba(255, 126, 103, 0.3);
 }
 
 .boton-principal:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 126, 103, 0.35);
+  box-shadow: 0 8px 22px rgba(255, 126, 103, 0.4);
 }
 
 .boton-secundario {
@@ -105,9 +131,9 @@ button {
 
 .caracteristicas {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px;
 }
 
 .item {
@@ -115,15 +141,17 @@ button {
   padding: 12px 18px;
   border-radius: 12px;
   font-size: 0.95rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: var(--sombra-suave);
 }
 
 /* ======================================
-   PÁGINA DE LOGIN
+   PÁGINA DE LOGIN · login.html
    ====================================== */
 .pagina-login {
   position: relative;
   overflow-x: hidden;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .burbuja {
@@ -131,30 +159,17 @@ button {
   border-radius: 50%;
   opacity: 0.25;
   z-index: 0;
+  pointer-events: none;
+  animation: flotar 8s ease-in-out infinite;
 }
 
-.b1 {
-  width: 180px;
-  height: 180px;
-  background: var(--primario);
-  top: 8%;
-  left: 6%;
-}
+.b1 { width: 180px; height: 180px; background: var(--primario); top: 8%; left: 6%; }
+.b2 { width: 120px; height: 120px; background: var(--secundario); bottom: 12%; right: 8%; animation-delay: 2s; }
+.b3 { width: 90px; height: 90px; background: var(--acento); top: 60%; left: 12%; animation-delay: 4s; }
 
-.b2 {
-  width: 120px;
-  height: 120px;
-  background: var(--secundario);
-  bottom: 12%;
-  right: 8%;
-}
-
-.b3 {
-  width: 90px;
-  height: 90px;
-  background: var(--acento);
-  top: 60%;
-  left: 12%;
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
 }
 
 .contenedor-login {
@@ -162,19 +177,18 @@ button {
   z-index: 1;
   max-width: 880px;
   margin: 0 auto;
-  padding: 40px 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
   background: white;
   border-radius: 28px;
-  box-shadow: 0 10px 60px rgba(255, 126, 103, 0.15);
+  box-shadow: var(--sombra-media);
   overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
 }
 
 .lado-izquierdo {
   background: linear-gradient(135deg, var(--primario), var(--acento));
-  padding: 40px 30px;
+  padding: 48px 32px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -183,17 +197,17 @@ button {
 
 .lado-izquierdo h2 {
   font-size: 1.8rem;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
-.lado-izquierdo p {
+.lado-izquierdo > p {
   font-size: 1rem;
-  margin-bottom: 25px;
-  opacity: 0.9;
+  margin-bottom: 30px;
+  opacity: 0.95;
 }
 
 .beneficios p {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 0.95rem;
 }
 
@@ -208,7 +222,9 @@ button {
 }
 
 .lado-derecho {
-  padding: 40px 30px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
 }
 
 .pestanas {
@@ -221,19 +237,20 @@ button {
 
 .pestana {
   flex: 1;
-  padding: 10px;
+  padding: 11px;
   background: transparent;
   border: none;
   border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #888;
+  color: var(--texto-claro);
+  transition: all 0.25s;
 }
 
 .pestana.activa {
   background: white;
   color: var(--primario);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: var(--sombra-suave);
 }
 
 .formulario {
@@ -242,6 +259,12 @@ button {
 
 .formulario.visible {
   display: block;
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .campo {
@@ -258,12 +281,13 @@ button {
 
 .campo input {
   width: 100%;
-  padding: 13px 16px;
+  padding: 14px 16px;
   border: 2px solid var(--borde);
   border-radius: 12px;
   font-size: 1rem;
   background: var(--fondo);
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .campo input:focus {
@@ -278,7 +302,7 @@ button {
 .error {
   font-size: 0.8rem;
   color: var(--error);
-  margin-top: 5px;
+  margin-top: 6px;
   display: none;
 }
 
@@ -289,29 +313,32 @@ button {
 .ojito {
   position: absolute;
   right: 14px;
-  top: 36px;
+  top: 38px;
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
+  color: var(--texto-claro);
 }
 
 .boton {
   width: 100%;
-  background: linear-gradient(135deg, var(--primario), #E86A50);
+  background: linear-gradient(135deg, var(--primario), var(--primario-oscuro));
   color: white;
   border: none;
   margin-top: 10px;
+  box-shadow: 0 4px 14px rgba(255, 126, 103, 0.3);
 }
 
 .exito {
   text-align: center;
-  padding: 30px 20px 10px;
+  padding: 30px 10px 10px;
   display: none;
 }
 
 .exito.visible {
   display: block;
+  animation: aparecer 0.4s ease;
 }
 
 .exito h3 {
@@ -322,11 +349,11 @@ button {
 
 .exito p {
   margin-bottom: 20px;
-  color: #666;
+  color: var(--texto-claro);
 }
 
 /* ======================================
-   PÁGINA DE SALA
+   PÁGINA DE SALA · sala.html
    ====================================== */
 .pagina-sala {
   background: var(--fondo);
@@ -335,30 +362,34 @@ button {
 
 .barra-superior {
   background: white;
-  padding: 15px 25px;
+  padding: 14px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: var(--sombra-suave);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .logo {
   font-family: 'Pacifico', cursive;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   color: var(--primario);
 }
 
 .info-usuario {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  font-size: 0.95rem;
 }
 
 .boton-salir {
-  padding: 6px 14px;
+  padding: 8px 14px;
   border: 2px solid var(--primario);
   color: var(--primario);
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   transition: all 0.2s;
@@ -372,31 +403,33 @@ button {
 .contenido {
   max-width: 600px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 24px 20px 80px;
 }
 
 .contenido h2 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
 }
 
 .descripcion {
-  color: #777;
-  margin-bottom: 25px;
+  color: var(--texto-claro);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
 }
 
 .buscador {
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 }
 
 .buscador input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 13px 16px;
   border: 2px solid var(--borde);
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 0.95rem;
   background: white;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .buscador input:focus {
@@ -406,53 +439,264 @@ button {
 .lista-personas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .persona {
   background: white;
-  padding: 16px 20px;
-  border-radius: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  box-shadow: var(--sombra-suave);
+  border: 2px solid transparent;
 }
 
 .persona:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 16px rgba(255, 126, 103, 0.12);
+  border-color: var(--primario);
 }
 
 .persona.eres-tu {
-  border: 2px solid var(--secundario);
-  background: #F0FFFC;
+  border-color: var(--secundario);
+  background: rgba(78, 205, 196, 0.08);
 }
 
 .avatar {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--acento), var(--primario));
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .punto-estado {
   position: absolute;
-  bottom: 2px;
+  bottom: 0;
   right: 0;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 3px solid white;
 }
 
-.punto-estado.en-linea {
-  background: #22C55E;
-}
+.punto-estado.en-linea { background: var(--en-linea); }
+.punto-estado.ocupada { background: var(--ocupada); }
+.punto-estado.ausente { background: var(--ausente); }
+.punto-estado.desconectada { background: var(--desconectada); }
 
 .info-persona {
   flex: 1;
+  min-width: 0;
 }
 
 .nombre-persona {
-  font-weight: 600
+  font-weight: 600;
+  font-size: 0.98rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estado-persona {
+  font-size: 0.85rem;
+  color: var(--texto-claro);
+}
+
+/* ======================================
+   PÁGINA DE CHAT · chat.html
+   ====================================== */
+.pagina-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--fondo);
+  position: relative;
+}
+
+.barra-chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: var(--sombra-suave);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.boton-volver {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--fondo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.boton-volver:hover {
+  transform: translateX(-3px);
+}
+
+.info-amiga {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar-grande {
+  font-size: 1.8rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acento), var(--primario));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-amiga h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.estado {
+  font-size: 0.85rem;
+  color: var(--en-linea);
+}
+
+.boton-llamada {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--secundario);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+}
+
+.boton-llamada:hover {
+  transform: scale(1.08);
+}
+
+.caja-mensajes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mensaje {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  animation: aparecer 0.25s ease;
+  word-wrap: break-word;
+}
+
+.mensaje.enviado {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--primario), var(--primario-oscuro));
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.mensaje.recibido {
+  align-self: flex-start;
+  background: white;
+  color: var(--texto);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--sombra-suave);
+}
+
+.texto-mensaje {
+  word-wrap: break-word;
+}
+
+.hora-mensaje {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.enviado .hora-mensaje { text-align: right; }
+.recibido .hora-mensaje { text-align: left; }
+
+.escribiendo {
+  padding: 4px 16px 8px;
+  font-size: 0.85rem;
+  color: var(--texto-claro);
+  font-style: italic;
+  display: none;
+}
+
+.barra-escribir {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.barra-escribir input {
+  flex: 1;
+  padding: 12px 18px;
+  border: 2px solid var(--borde);
+  border-radius: 24px;
+  font-size: 0.95rem;
+  background: var(--fondo);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.barra-escribir input:focus {
+  border-color: var(--primario);
+}
+
+.barra-escribir button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primario), var(--primario-oscuro));
+  color: white;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.barra-escribir button:hover {
+  transform: scale(1.05);
+}
+
+/* ======================================
+   VIDEOCALL · SOBRE EL CHAT
+   ====================================== */
+.capa-video {
+ 
