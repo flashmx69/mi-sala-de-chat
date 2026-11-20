@@ -6,10 +6,6 @@
 const SUPABASE_URL = 'https://dkgnxbsvvbceaaoigexj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_jRyyfbNuESxhU_TGhqKBgg_8VbxcjCZ';
 
-// Inicializar Supabase UNA SOLA VEZ
-const { createClient } = supabase;
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 // ---------- VARIABLES GLOBALES ----------
 let nombreUsuario = localStorage.getItem('nombreUsuario') || 'Anónima';
 let userId = localStorage.getItem('userId');
@@ -29,6 +25,14 @@ function correoValido(texto) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texto);
 }
 
+// Inicializar Supabase
+let supabaseClient;
+if (typeof supabase !== 'undefined') {
+  supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  console.error('❌ Supabase no está cargado. Revisa el orden de los scripts.');
+}
+
 // =====================================================
 // PÁGINA: login.html
 // =====================================================
@@ -44,16 +48,17 @@ if (pagina === 'login.html') {
     btnEntrar.addEventListener('click', () => {
       btnEntrar.classList.add('activa');
       btnRegistrarse.classList.remove('activa');
-      formEntrar.classList.add('visible');
-      formRegistro.classList.remove('visible');
-      mensajeExito.classList.remove('visible');
+      if (formEntrar) formEntrar.classList.add('visible');
+      if (formRegistro) formRegistro.classList.remove('visible');
+      if (mensajeExito) mensajeExito.classList.remove('visible');
     });
+
     btnRegistrarse.addEventListener('click', () => {
       btnRegistrarse.classList.add('activa');
       btnEntrar.classList.remove('activa');
-      formRegistro.classList.add('visible');
-      formEntrar.classList.remove('visible');
-      mensajeExito.classList.remove('visible');
+      if (formRegistro) formRegistro.classList.add('visible');
+      if (formEntrar) formEntrar.classList.remove('visible');
+      if (mensajeExito) mensajeExito.classList.remove('visible');
     });
   }
 
@@ -73,10 +78,8 @@ if (pagina === 'login.html') {
   function mostrarError(elementoId, errorId, hayError) {
     const el = document.getElementById(elementoId);
     const err = document.getElementById(errorId);
-    if (el && err) {
-      el.classList.toggle('error', hayError);
-      err.classList.toggle('visible', hayError);
-    }
+    if (el) el.classList.toggle('error', hayError);
+    if (err) err.classList.toggle('visible', hayError);
     return !hayError;
   }
 
@@ -91,8 +94,8 @@ if (pagina === 'login.html') {
       if (ok1 && ok2) {
         nombreUsuario = correo.split('@')[0];
         localStorage.setItem('nombreUsuario', nombreUsuario);
-        textoExito.textContent = `¡Hola ${nombreUsuario}! Conectando...`;
-        mensajeExito.classList.add('visible');
+        if (textoExito) textoExito.textContent = `¡Hola ${nombreUsuario}! Conectando...`;
+        if (mensajeExito) mensajeExito.classList.add('visible');
         setTimeout(() => window.location.href = 'sala.html', 800);
       }
     });
@@ -111,8 +114,8 @@ if (pagina === 'login.html') {
       if (ok1 && ok2 && ok3) {
         nombreUsuario = nombre;
         localStorage.setItem('nombreUsuario', nombreUsuario);
-        textoExito.textContent = `¡Bienvenida, ${nombre}! 🎉`;
-        mensajeExito.classList.add('visible');
+        if (textoExito) textoExito.textContent = `¡Bienvenida, ${nombre}! 🎉`;
+        if (mensajeExito) mensajeExito.classList.add('visible');
         setTimeout(() => window.location.href = 'sala.html', 800);
       }
     });
@@ -122,7 +125,7 @@ if (pagina === 'login.html') {
 // =====================================================
 // PÁGINA: sala.html
 // =====================================================
-if (pagina === 'sala.html') {
+if (pagina === 'sala.html' && supabaseClient) {
   const nombreUsuarioEl = document.getElementById('nombreUsuario');
   const saludoNombre = document.getElementById('saludoNombre');
   const listaPersonas = document.getElementById('listaPersonas');
@@ -134,7 +137,7 @@ if (pagina === 'sala.html') {
   if (saludoNombre) saludoNombre.textContent = nombreUsuario;
 
   async function actualizarMiEstado(enLinea) {
-    await supabase.from('conectados').upsert({
+    await supabaseClient.from('conectados').upsert({
       id: userId,
       nombre: nombreUsuario,
       en_linea: enLinea,
@@ -145,12 +148,12 @@ if (pagina === 'sala.html') {
   actualizarMiEstado(true);
 
   window.addEventListener('beforeunload', () => {
-    supabase.from('conectados').update({ en_linea: false }).eq('id', userId);
+    supabaseClient.from('conectados').update({ en_linea: false }).eq('id', userId);
   });
 
   async function cargarConectados() {
     const hace5Minutos = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('conectados')
       .select('*')
       .eq('en_linea', true)
@@ -172,7 +175,7 @@ if (pagina === 'sala.html') {
       listaPersonas.innerHTML = `
         <div style="text-align:center; padding:60px 20px; color:#888;">
           😴 Nadie más está conectado ahora mismo<br>
-          <small>¡Comparte tu enlace con tus amigas para chatear de verdad!</small>
+          <small>¡Comparte tu enlace con tus amigas para chatear!</small>
         </div>`;
       return;
     }
@@ -181,13 +184,10 @@ if (pagina === 'sala.html') {
       const div = document.createElement('div');
       div.className = 'persona';
       div.innerHTML = `
-        <div class="avatar">
-          👩
-          <span class="punto-estado en-linea"></span>
-        </div>
+        <div class="avatar">👩</div>
         <div class="info-persona">
           <div class="nombre-persona">${p.nombre}</div>
-          <div class="estado-persona">🟢 Conectada ahora</div>
+          <div class="estado-persona">🟢 Conectada</div>
         </div>
         <span style="color:#ccc; font-weight:bold;">›</span>
       `;
@@ -211,7 +211,7 @@ if (pagina === 'sala.html') {
 
   setInterval(() => actualizarMiEstado(true), 15000);
 
-  supabase.channel('public:conectados')
+  supabaseClient.channel('public:conectados')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'conectados' }, cargarConectados)
     .subscribe();
   
@@ -221,20 +221,18 @@ if (pagina === 'sala.html') {
 // =====================================================
 // PÁGINA: chat.html
 // =====================================================
-if (pagina === 'chat.html') {
+if (pagina === 'chat.html' && supabaseClient) {
   const guardada = localStorage.getItem('amigaActual');
   chatIdActual = localStorage.getItem('chatIdActual');
   if (guardada) amigaActual = JSON.parse(guardada);
 
-  const avatarAmiga = document.getElementById('avatarAmiga');
   const nombreAmiga = document.getElementById('nombreAmiga');
   const cajaMensajes = document.getElementById('cajaMensajes');
   const formMensaje = document.getElementById('formMensaje');
   const entradaMensaje = document.getElementById('entradaMensaje');
 
-  if (amigaActual) {
-    if (avatarAmiga) avatarAmiga.textContent = '👩';
-    if (nombreAmiga) nombreAmiga.textContent = amigaActual.nombre;
+  if (amigaActual && nombreAmiga) {
+    nombreAmiga.textContent = amigaActual.nombre;
   }
 
   function agregarMensaje(datos) {
@@ -254,13 +252,14 @@ if (pagina === 'chat.html') {
 
   async function cargarMensajes() {
     if (!chatIdActual) return;
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('mensajes')
       .select('*')
       .eq('chat_id', chatIdActual)
       .order('hora', { ascending: true });
 
     if (error) return console.error('Error:', error);
+    if (cajaMensajes) cajaMensajes.innerHTML = '';
     (data || []).forEach(agregarMensaje);
   }
 
@@ -272,7 +271,7 @@ if (pagina === 'chat.html') {
       
       entradaMensaje.value = '';
       
-      await supabase.from('mensajes').insert({
+      await supabaseClient.from('mensajes').insert({
         chat_id: chatIdActual,
         de: userId,
         de_nombre: nombreUsuario,
@@ -283,7 +282,7 @@ if (pagina === 'chat.html') {
   }
 
   if (chatIdActual) {
-    supabase.channel(chatIdActual)
+    supabaseClient.channel(chatIdActual)
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
