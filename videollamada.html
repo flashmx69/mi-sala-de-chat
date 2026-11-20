@@ -3,28 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Videollamada</title>
+  <meta name="theme-color" content="#1E1B2E">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="96x96" href="icono-96.png">
+  <title>Videollamada · Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body class="pagina-videollamada">
+
+  <!-- Persona con la que hablas (su cámara iría aquí) -->
   <div class="caja-video-remota">
     <div class="avatar-remoto" id="avatarRemoto">👩</div>
     <p class="nombre-remoto" id="nombreRemoto">Amiga</p>
-  </div>
-
-  <div class="caja-video-propia">
-    <video id="miCamara" autoplay playsinline muted></video>
-    <div class="sin-camara" id="sinCamara">📷 Iniciando cámara...</div>
+    <div class="ondas"><span></span><span></span><span></span><span></span><span></span></div>
   </div>
 
   <p class="tiempo" id="tiempo">00:00</p>
 
+  <!-- Tu cámara, en la esquina -->
+  <div class="caja-video-propia">
+    <video id="miCamara" autoplay playsinline muted></video>
+    <div class="sin-camara" id="sinCamara">📷 Iniciando cámara…</div>
+  </div>
+
+  <!-- MINI-CHAT dentro de la videollamada: toca para abrirlo y escribe sin colgar -->
+  <div class="mini-chat" id="miniChat">
+    <div class="mini-chat-cabecera" id="miniChatCabecera">
+      <span>💬 Chat (toca para abrir)</span>
+      <span id="miniChatFlecha">▲</span>
+    </div>
+    <div class="mini-mensajes" id="miniMensajes"></div>
+    <form class="mini-barra" id="miniForm">
+      <input type="text" id="miniEntrada" placeholder="Escribe mientras hablas…" autocomplete="off">
+      <button type="submit">➤</button>
+    </form>
+  </div>
+
+  <!-- Controles: micrófono, colgar, cámara -->
   <div class="controles-llamada">
     <button class="control" id="btnMicrofono">🎤</button>
-    <a href="chat.html" class="control colgar">✕</a>
+    <a href="chat.html" class="control colgar" title="Colgar">✕</a>
     <button class="control" id="btnCamara">📹</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

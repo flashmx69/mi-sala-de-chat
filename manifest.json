@@ -7,12 +7,18 @@
   "display": "standalone",
   "background_color": "#FFF7F0",
   "theme_color": "#FF7E67",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "icons": [
     {
       "src": "icono.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icono-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {

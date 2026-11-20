@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
+  <meta name="theme-color" content="#FF7E67">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="96x96" href="icono-96.png">
+  <title>Chat · Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body class="pagina-chat">
+
+  <!-- Barra de arriba: volver, quién es, y botón de video 📹 -->
   <div class="barra-chat">
     <a href="sala.html" class="boton-volver">←</a>
     <div class="info-amiga">
@@ -17,20 +21,44 @@
         <p class="estado">🟢 Conectada</p>
       </div>
     </div>
-    <a href="videollamada.html" class="boton-llamada">📹</a>
+    <button class="boton-llamada" id="btnVideo" title="Videollamada">📹</button>
   </div>
 
+  <!-- PANEL DE VIDEO INTEGRADO (la novedad):
+       Se abre al tocar 📹. Muestra la cámara de la otra persona (arriba)
+       y la tuya (esquinita). Los mensajes siguen funcionando abajo. -->
+  <div class="panel-video" id="panelVideo">
+    <div class="video-cuerpo">
+      <div class="video-remoto-spot">
+        <div class="avatar-remoto" id="avatarRemotoChico">👩</div>
+        <div class="nombre-remoto" id="nombreRemotoChico">Amiga</div>
+        <div class="ondas"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="nota-camara">Esperando su cámara…</div>
+      </div>
+      <div class="mi-camara-chica">
+        <video id="miCamaraChica" autoplay playsinline muted></video>
+        <div class="sin-camara-chica" id="sinCamaraChica">📷</div>
+      </div>
+    </div>
+    <div class="video-controles">
+      <button id="btnMicChico" title="Micrófono">🎤</button>
+      <button id="btnMinimizar" title="Minimizar">➖</button>
+      <button id="btnCamChico" title="Cámara">📹</button>
+      <button class="cerrar-video" id="btnCerrarVideo" title="Cerrar video">✕</button>
+    </div>
+  </div>
+
+  <!-- Mensajes (siguen visibles y escribibles con el video abierto) -->
   <div class="caja-mensajes" id="cajaMensajes"></div>
-  <p class="escribiendo" id="indicadorEscribiendo">escribiendo...</p>
+  <p class="escribiendo" id="indicadorEscribiendo"></p>
 
   <form class="barra-escribir" id="formMensaje">
-    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje...">
+    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje…" autocomplete="off">
     <button type="submit">➤</button>
   </form>
 
-  <!-- Justo antes de cerrar </body> -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="app.js"></script>
-
+  <!-- Librería de Supabase + nuestra lógica (app.js activa PWA en todas las páginas) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
