@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar Sesión</title>
   <link rel="stylesheet" href="estilos.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 </head>
 <body class="pagina-login">
@@ -77,6 +76,23 @@
   
 <!-- Justo antes de cerrar </body> -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// 🧪 PRUEBA — Esto nos dirá qué está funcionando
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('✅ La página terminó de cargar');
+  
+  const formEntrar = document.getElementById('formEntrar');
+  console.log('formEntrar encontrado:', formEntrar ? '✅ SÍ' : '❌ NO');
+  
+  if (formEntrar) {
+    formEntrar.addEventListener('submit', function(e) {
+      console.log('🖱️ Se dio clic en Entrar');
+      alert('¡Clic detectado!'); // 🔔 Debería aparecer un mensajito
+    });
+  }
+});
+</script>
+
 <script src="app.js"></script>
 
 </body>
