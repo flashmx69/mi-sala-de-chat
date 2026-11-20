@@ -1,5 +1,5 @@
 // service-worker.js — guarda los archivos para que la app funcione sin internet.
-const NOMBRE_CACHE = 'sala-amigas-v2';
+const NOMBRE_CACHE = 'sala-amigas-v6';
 const ARCHIVOS_CACHE = [
   './',
   './index.html',
