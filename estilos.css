@@ -1,521 +1,1287 @@
 /* =====================================================
-   estilos.css · TODO EL DISEÑO de "Sala de Amigas"
-   (la ropa de la app: colores, tamaños, posiciones)
-   Versión multipantalla: móvil, tablet y escritorio.
+   estilos.css · Mantiene la UI/UX y paleta original
+   Adaptado a celular, tablet, iOS, Android y PC
    ===================================================== */
 
-/* ===== 1. Caja de pinturas (colores con nombre) ===== */
-:root{
-  --fondo-claro:#FFF7F0; --fondo-oscuro:#1E1B2E;
-  --tarjeta-claro:#FFFFFF; --tarjeta-oscuro:#2A2640;
-  --texto-claro:#3D3550; --texto-oscuro:#F0ECFF;
-  --texto-suave-claro:#8A8299; --texto-suave-oscuro:#A8A2C0;
-  --principal:#FF7E67; --principal-oscuro:#E8654F;
-  --secundario:#4ECDC4; --acento:#FFD166;
-  --borde-claro:#F0E6DC; --borde-oscuro:#3D3858;
-  --error:#E63946; --ok:#2EC4B6; --peligro:#E63946;
-  --en-linea:#2EC4B6;
+:root {
+  --fondo-claro: #FFF7F0;
+  --fondo-oscuro: #1E1B2E;
+  --tarjeta-claro: #FFFFFF;
+  --tarjeta-oscuro: #2A2640;
+  --texto-claro: #3D3550;
+  --texto-oscuro: #F0ECFF;
+  --texto-suave-claro: #8A8299;
+  --texto-suave-oscuro: #A8A2C0;
+  --principal: #FF7E67;
+  --principal-oscuro: #E8654F;
+  --secundario: #4ECDC4;
+  --acento: #FFD166;
+  --borde-claro: #F0E6DC;
+  --borde-oscuro: #3D3858;
+  --error: #E63946;
+  --ok: #2EC4B6;
+  --peligro: #E63946;
+  --en-linea: #2EC4B6;
 }
 
-/* ===== 2. Reglas básicas de toda la página ===== */
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{
-  font-family:'Quicksand','Segoe UI',sans-serif;
-  background:var(--fondo-claro);
-  color:var(--texto-claro);
-  min-height:100vh;
-  transition:background .4s,color .4s;
-  -webkit-tap-highlight-color:transparent;
-}
-body.oscuro{background:var(--fondo-oscuro);color:var(--texto-oscuro)}
-
-/* Botón sol/luna (esquinita, modo oscuro) */
-.btn-tema{
-  position:fixed;top:14px;right:14px;z-index:200;
-  width:40px;height:40px;border-radius:50%;border:none;
-  background:var(--tarjeta-claro);cursor:pointer;font-size:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,.12);transition:transform .2s;
-}
-body.oscuro .btn-tema{background:var(--tarjeta-oscuro)}
-.btn-tema:hover{transform:scale(1.1) rotate(15deg)}
-
-/* Botón flotante "Instalar App" (PWA) */
-.boton-instalar{
-  position:fixed;bottom:20px;right:20px;z-index:9999;
-  padding:12px 20px;background:var(--principal);color:#fff;border:none;
-  border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;
-  box-shadow:0 4px 12px rgba(255,126,103,.4);
-  font-family:'Quicksand',sans-serif;
-  animation:aparecer .4s ease;
-}
-.boton-instalar:hover{transform:scale(1.05)}
-
-@keyframes aparecer{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes flotar{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-25px) scale(1.05)}}
-@keyframes sonar{0%,100%{height:6px}50%{height:26px}}
-
-/* =====================================================
-   3. PÁGINA DE INICIO (index.html)
-   ===================================================== */
-.pagina-inicio{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  background:linear-gradient(135deg,#FFF7F0 0%,#FFE8E0 50%,#E0F7F5 100%);
-}
-body.oscuro .pagina-inicio{background:linear-gradient(135deg,#1E1B2E,#2A2640)}
-.contenedor-inicio{
-  text-align:center;max-width:480px;width:100%;
-  background:var(--tarjeta-claro);border-radius:32px;
-  padding:48px 32px;box-shadow:0 20px 60px rgba(255,126,103,.2);
-  animation:aparecer .5s ease;
-}
-body.oscuro .contenedor-inicio{background:var(--tarjeta-oscuro)}
-.titulo-principal{
-  font-size:40px;margin-bottom:10px;
-  background:linear-gradient(135deg,var(--principal),var(--secundario));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.subtitulo{font-size:16px;color:var(--texto-suave-claro);margin-bottom:32px}
-body.oscuro .subtitulo{color:var(--texto-suave-oscuro)}
-.botones-inicio{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
-.boton-principal,.boton-secundario{
-  display:block;padding:15px;border-radius:16px;text-decoration:none;
-  font-weight:700;font-size:16px;transition:transform .2s,box-shadow .2s;
-  font-family:'Quicksand',sans-serif;
-}
-.boton-principal{
-  background:linear-gradient(135deg,var(--principal),var(--principal-oscuro));
-  color:#fff;box-shadow:0 6px 18px rgba(255,126,103,.4);
-}
-.boton-principal:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,126,103,.5)}
-.boton-secundario{
-  background:transparent;color:var(--principal);
-  border:2px solid var(--principal);
-}
-.boton-secundario:hover{background:rgba(255,126,103,.1)}
-.caracteristicas{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
-.caracteristicas .item{
-  background:var(--fondo-claro);padding:10px 16px;border-radius:20px;
-  font-size:13px;font-weight:600;color:var(--texto-suave-claro);
-}
-body.oscuro .caracteristicas .item{background:var(--fondo-oscuro);color:var(--texto-suave-oscuro)}
-
-/* =====================================================
-   4. LOGIN / REGISTRO (login.html)
-   ===================================================== */
-.pagina-login{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;position:relative;overflow:hidden;
-}
-.burbuja{position:fixed;border-radius:50%;opacity:.35;pointer-events:none;animation:flotar 8s ease-in-out infinite;z-index:0}
-.b1{width:180px;height:180px;background:var(--principal);top:8%;left:6%}
-.b2{width:120px;height:120px;background:var(--secundario);bottom:12%;right:8%;animation-delay:2s}
-.b3{width:90px;height:90px;background:var(--acento);top:60%;left:12%;animation-delay:4s}
-
-.contenedor-login{
-  position:relative;z-index:1;width:100%;max-width:880px;
-  background:var(--tarjeta-claro);border-radius:28px;
-  box-shadow:0 20px 60px rgba(255,126,103,.18);
-  display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
-  transition:background .4s;
-}
-body.oscuro .contenedor-login{background:var(--tarjeta-oscuro)}
-
-/* Lado izquierdo: bienvenida */
-.lado-izquierdo{
-  background:linear-gradient(135deg,var(--principal) 0%,var(--acento) 100%);
-  padding:48px 36px;display:flex;flex-direction:column;justify-content:center;color:#fff;
-}
-.lado-izquierdo h2{font-size:28px;margin-bottom:14px}
-.lado-izquierdo > p{font-size:15px;opacity:.95;line-height:1.6;margin-bottom:24px}
-.beneficios p{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:12px;font-weight:600}
-.enlace-inicio{margin-top:24px}
-.enlace-inicio a{color:#fff;font-weight:700;text-decoration:none;font-size:14px;opacity:.9}
-.enlace-inicio a:hover{opacity:1;text-decoration:underline}
-
-/* Lado derecho: formularios */
-.lado-derecho{padding:40px 36px;position:relative}
-.pestañas{display:flex;background:var(--fondo-claro);border-radius:14px;padding:5px;margin-bottom:24px;transition:background .4s}
-body.oscuro .pestañas{background:var(--fondo-oscuro)}
-.pestaña{
-  flex:1;padding:11px;text-align:center;border:none;background:transparent;
-  font-family:'Quicksand',sans-serif;font-weight:600;font-size:14px;
-  color:var(--texto-suave-claro);border-radius:10px;cursor:pointer;transition:all .3s;
-}
-body.oscuro .pestaña{color:var(--texto-suave-oscuro)}
-.pestaña.activa{background:var(--principal);color:#fff;box-shadow:0 4px 12px rgba(255,126,103,.4)}
-
-.formulario{display:none}
-.formulario.visible{display:block;animation:aparecer .3s ease}
-.campo{margin-bottom:16px;position:relative}
-.campo label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-.campo input{
-  width:100%;padding:13px 16px;border:2px solid var(--borde-claro);border-radius:12px;
-  font-family:'Quicksand',sans-serif;font-size:15px;background:var(--fondo-claro);
-  color:var(--texto-claro);transition:border-color .2s,box-shadow .2s;outline:none;
-}
-body.oscuro .campo input{background:var(--fondo-oscuro);border-color:var(--borde-oscuro);color:var(--texto-oscuro)}
-.campo input:focus{border-color:var(--principal);box-shadow:0 0 0 4px rgba(255,126,103,.15)}
-.campo input.error{border-color:var(--error)}
-.ojito{position:absolute;right:14px;top:36px;background:none;border:none;cursor:pointer;font-size:16px}
-.error{color:var(--error);font-size:12px;margin-top:5px;font-weight:600;display:none}
-.error.visible{display:block}
-.boton{
-  width:100%;padding:14px;
-  background:linear-gradient(135deg,var(--principal),var(--principal-oscuro));
-  color:#fff;border:none;border-radius:14px;font-family:'Quicksand',sans-serif;
-  font-size:16px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;
-  box-shadow:0 6px 18px rgba(255,126,103,.35);
-}
-.boton:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(255,126,103,.45)}
-
-.exito{display:none;text-align:center;padding:30px 10px;animation:aparecer .3s ease}
-.exito.visible{display:block}
-.exito h3{font-size:22px;margin-bottom:8px}
-.exito p{font-size:14px;color:var(--texto-suave-claro)}
-body.oscuro .exito p{color:var(--texto-suave-oscuro)}
-
-/* =====================================================
-   5. SALA DE CONECTADAS (sala.html)
-   ===================================================== */
-.pagina-sala{min-height:100vh;display:flex;flex-direction:column}
-.barra-superior{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 24px;background:var(--tarjeta-claro);
-  box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:10;
-  transition:background .4s;flex-wrap:wrap;gap:10px;
-}
-body.oscuro .barra-superior{background:var(--tarjeta-oscuro)}
-.barra-superior .logo{font-size:22px;font-weight:700;color:var(--principal)}
-.info-usuario{display:flex;align-items:center;gap:12px;font-weight:600;font-size:14px}
-.boton-salir{
-  padding:8px 16px;border:2px solid var(--borde-claro);background:transparent;
-  border-radius:12px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:13px;
-  color:var(--texto-claro);cursor:pointer;text-decoration:none;transition:all .2s;
-}
-body.oscuro .boton-salir{border-color:var(--borde-oscuro);color:var(--texto-oscuro)}
-.boton-salir:hover{border-color:var(--peligro);color:var(--peligro)}
-
-.contenido{max-width:640px;margin:0 auto;padding:24px 20px 60px;width:100%}
-.contenido h2{font-size:24px;margin-bottom:6px}
-.descripcion{font-size:14px;color:var(--texto-suave-claro);margin-bottom:18px}
-body.oscuro .descripcion{color:var(--texto-suave-oscuro)}
-
-.buscador{
-  display:flex;align-items:center;background:var(--tarjeta-claro);
-  border:2px solid var(--borde-claro);border-radius:16px;padding:12px 16px;margin-bottom:16px;
-  transition:all .2s;
-}
-body.oscuro .buscador{background:var(--tarjeta-oscuro);border-color:var(--borde-oscuro)}
-.buscador:focus-within{border-color:var(--principal);box-shadow:0 0 0 4px rgba(255,126,103,.15)}
-.buscador input{
-  flex:1;border:none;background:transparent;outline:none;
-  font-family:'Quicksand',sans-serif;font-size:15px;color:var(--texto-claro);
-}
-body.oscuro .buscador input{color:var(--texto-oscuro)}
-
-.lista-personas{display:flex;flex-direction:column;gap:10px}
-.persona{
-  display:flex;align-items:center;gap:14px;background:var(--tarjeta-claro);
-  border:2px solid transparent;border-radius:18px;padding:14px 18px;cursor:pointer;
-  transition:all .25s;animation:aparecer .4s ease;
-}
-body.oscuro .persona{background:var(--tarjeta-oscuro)}
-.persona:hover{border-color:var(--principal);transform:translateX(6px);box-shadow:0 6px 18px rgba(255,126,103,.18)}
-.avatar{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--acento),var(--principal));
-  display:flex;align-items:center;justify-content:center;font-size:24px;
-}
-.info-persona{flex:1;min-width:0}
-.nombre-persona{font-weight:700;font-size:16px;margin-bottom:3px}
-.estado-persona{font-size:13px;color:var(--en-linea);font-weight:600}
-
-/* =====================================================
-   6. CHAT (chat.html) — con panel de video integrado
-   ===================================================== */
-.pagina-chat{
-  height:100vh;display:flex;flex-direction:column;overflow:hidden;
-  position:relative;
-}
-.barra-chat{
-  display:flex;align-items:center;gap:12px;padding:12px 16px;
-  background:var(--tarjeta-claro);box-shadow:0 2px 12px rgba(0,0,0,.06);
-  transition:background .4s;flex-shrink:0;z-index:5;
-}
-body.oscuro .barra-chat{background:var(--tarjeta-oscuro)}
-.boton-volver{
-  width:38px;height:38px;border-radius:50%;border:none;flex-shrink:0;
-  background:var(--fondo-claro);font-size:18px;cursor:pointer;text-decoration:none;
-  display:flex;align-items:center;justify-content:center;color:var(--texto-claro);
-  transition:transform .2s;
-}
-body.oscuro .boton-volver{background:var(--fondo-oscuro);color:var(--texto-oscuro)}
-.boton-volver:hover{transform:translateX(-3px)}
-.info-amiga{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.avatar-grande{
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--acento),var(--principal));
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-}
-.info-amiga h3{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.info-amiga .estado{font-size:12px;color:var(--en-linea);font-weight:600}
-.boton-llamada{
-  width:42px;height:42px;border-radius:50%;border:none;flex-shrink:0;
-  background:var(--ok);color:#fff;font-size:18px;cursor:pointer;text-decoration:none;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(46,196,182,.4);transition:transform .2s;
-}
-.boton-llamada:hover{transform:scale(1.1)}
-.boton-llamada.activo{background:var(--peligro);animation:latido 1.5s infinite}
-
-/* Área de mensajes (se hace más chica cuando el video está abierto) */
-.caja-mensajes{
-  flex:1;overflow-y:auto;padding:16px;
-  display:flex;flex-direction:column;gap:10px;
-  transition:padding-right .3s;
-}
-.mensaje{
-  max-width:75%;padding:10px 14px;border-radius:18px;font-size:14px;
-  line-height:1.4;animation:aparecer .3s ease;word-wrap:break-word;
-}
-.mensaje.enviado{
-  align-self:flex-end;color:#fff;
-  background:linear-gradient(135deg,var(--principal),var(--principal-oscuro));
-  border-bottom-right-radius:4px;
-}
-.mensaje.recibido{
-  align-self:flex-start;background:var(--tarjeta-claro);color:var(--texto-claro);
-  border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
-body.oscuro .mensaje.recibido{background:var(--tarjeta-oscuro);color:var(--texto-oscuro)}
-.hora-mensaje{display:block;font-size:10px;opacity:.6;margin-top:4px;text-align:right}
-.escribiendo{
-  padding:0 16px 6px;font-size:12px;color:var(--texto-suave-claro);
-  font-style:italic;font-weight:600;flex-shrink:0;
-}
-body.oscuro .escribiendo{color:var(--texto-suave-oscuro)}
-
-.barra-escribir{
-  display:flex;gap:10px;padding:12px 16px;flex-shrink:0;
-  background:var(--tarjeta-claro);box-shadow:0 -2px 12px rgba(0,0,0,.06);
-  transition:background .4s;z-index:5;
-}
-body.oscuro .barra-escribir{background:var(--tarjeta-oscuro)}
-.barra-escribir input{
-  flex:1;padding:12px 16px;border:2px solid var(--borde-claro);border-radius:24px;
-  font-family:'Quicksand',sans-serif;font-size:14px;background:var(--fondo-claro);
-  color:var(--texto-claro);outline:none;transition:border-color .2s;min-width:0;
-}
-body.oscuro .barra-escribir input{background:var(--fondo-oscuro);border-color:var(--borde-oscuro);color:var(--texto-oscuro)}
-.barra-escribir input:focus{border-color:var(--principal)}
-.barra-escribir button{
-  width:46px;height:46px;border-radius:50%;border:none;flex-shrink:0;
-  background:linear-gradient(135deg,var(--principal),var(--principal-oscuro));
-  color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(255,126,103,.4);
-  transition:transform .2s;
-}
-.barra-escribir button:hover{transform:scale(1.08)}
-
-/* ----- PANEL DE VIDEO DENTRO DEL CHAT (la novedad) ----- */
-/* Es una ventanita flotante: se ve tu cámara y la de la otra persona,
-   y abajo siguen funcionando los mensajes y el teclado. */
-.panel-video{
-  position:fixed;top:70px;right:16px;z-index:50;
-  width:260px;border-radius:20px;overflow:hidden;
-  background:#1E1B2E;color:#fff;
-  box-shadow:0 12px 40px rgba(0,0,0,.4);
-  animation:aparecer .35s ease;
-  display:none;flex-direction:column;
-}
-.panel-video.visible{display:flex}
-.panel-video.minimizado{width:64px;height:64px;border-radius:50%;top:auto;bottom:80px;right:16px}
-.panel-video.minimizado .video-cuerpo,.panel-video.minimizado .video-controles{display:none}
-
-.video-cuerpo{position:relative;aspect-ratio:4/3;background:#0d0b1a}
-.video-remoto-spot{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:8px;
-  background:linear-gradient(135deg,#2A2640,#1E1B2E);
-}
-.video-remoto-spot .avatar-remoto{
-  width:64px;height:64px;border-radius:50%;font-size:32px;
-  background:linear-gradient(135deg,var(--acento),var(--principal));
-  display:flex;align-items:center;justify-content:center;
-  animation:latido 1.6s infinite;
-}
-.video-remoto-spot .nombre-remoto{font-size:13px;font-weight:600;opacity:.9}
-.video-remoto-spot .nota-camara{font-size:10px;opacity:.6}
-.ondas{display:flex;gap:4px;align-items:flex-end;height:24px}
-.ondas span{width:4px;background:var(--ok);border-radius:2px;animation:sonar .6s ease-in-out infinite}
-.ondas span:nth-child(1){animation-delay:.1s}.ondas span:nth-child(2){animation-delay:.3s}
-.ondas span:nth-child(3){animation-delay:.5s}.ondas span:nth-child(4){animation-delay:.2s}
-.ondas span:nth-child(5){animation-delay:.4s}
-
-/* Tu cámara, en esquinitas del panel */
-.mi-camara-chica{
-  position:absolute;bottom:8px;right:8px;width:70px;height:94px;
-  border-radius:10px;overflow:hidden;background:#000;
-  border:2px solid rgba(255,255,255,.3);
-}
-.mi-camara-chica video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-.mi-camara-chica .sin-camara-chica{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:20px;background:linear-gradient(135deg,#3D3858,#2A2640);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.video-controles{
-  display:flex;justify-content:space-around;align-items:center;
-  padding:10px;background:rgba(0,0,0,.5);
-}
-.video-controles button{
-  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
-  background:rgba(255,255,255,.15);color:#fff;font-size:16px;transition:all .2s;
-}
-.video-controles button:hover{transform:scale(1.1);background:rgba(255,255,255,.25)}
-.video-controles button.apagado{background:var(--peligro)}
-.video-controles .cerrar-video{background:var(--peligro)}
-
-/* =====================================================
-   7. VIDEOLLAMADA A PANTALLA COMPLETA (videollamada.html)
-   ===================================================== */
-.pagina-videollamada{
-  height:100vh;display:flex;flex-direction:column;background:#0d0b1a;
-  color:#fff;overflow:hidden;position:relative;
-}
-.caja-video-remota{
-  flex:1;position:relative;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:14px;
-  background:linear-gradient(135deg,#2A2640,#1E1B2E);
-  overflow:hidden;
-}
-.caja-video-remota .avatar-remoto{
-  width:140px;height:140px;border-radius:50%;font-size:70px;
-  background:linear-gradient(135deg,var(--acento),var(--principal));
-  display:flex;align-items:center;justify-content:center;
-  animation:latido 1.6s ease-in-out infinite;
-}
-.caja-video-remota .nombre-remoto{font-size:18px;font-weight:600}
-.tiempo{
-  position:absolute;top:20px;left:50%;transform:translateX(-50%);
-  background:rgba(0,0,0,.6);padding:6px 16px;border-radius:20px;
-  font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;z-index:5;
-}
-.caja-video-propia{
-  position:absolute;bottom:110px;right:20px;
-  width:130px;height:175px;border-radius:16px;overflow:hidden;
-  background:#000;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:4;
-}
-.caja-video-propia video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-.sin-camara{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;font-size:13px;text-align:center;gap:6px;padding:8px;
-  background:linear-gradient(135deg,#3D3858,#2A2640);
-}
-.controles-llamada{
-  display:flex;justify-content:center;gap:24px;padding:22px;
-  background:rgba(0,0,0,.5);flex-shrink:0;z-index:5;
-}
-.control{
-  width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
-  background:rgba(255,255,255,.15);color:#fff;font-size:24px;
-  transition:all .2s;backdrop-filter:blur(4px);
-  display:flex;align-items:center;justify-content:center;text-decoration:none;
-}
-.control:hover{transform:scale(1.1);background:rgba(255,255,255,.25)}
-.control.apagado{background:var(--peligro)}
-.control.colgar{background:var(--peligro);transform:rotate(135deg)}
-.control.colgar:hover{transform:rotate(135deg) scale(1.1)}
-
-/* Mini chat dentro de la videollamada (para escribir sin salir) */
-.mini-chat{
-  position:absolute;left:16px;right:16px;bottom:110px;z-index:6;
-  max-height:40%;display:flex;flex-direction:column;
-  background:rgba(30,27,46,.92);border-radius:16px;overflow:hidden;
-  backdrop-filter:blur(8px);box-shadow:0 8px 30px rgba(0,0,0,.5);
-  transform:translateY(calc(100% - 48px));transition:transform .3s ease;
-}
-.mini-chat.abierto{transform:translateY(0)}
-.mini-chat-cabecera{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;cursor:pointer;font-weight:600;font-size:14px;flex-shrink:0;
-}
-.mini-mensajes{
-  flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px;
-  min-height:0;
-}
-.mini-mensaje{max-width:80%;padding:6px 10px;border-radius:12px;font-size:12px;line-height:1.3;word-wrap:break-word}
-.mini-mensaje.enviado{align-self:flex-end;background:var(--principal);color:#fff;border-bottom-right-radius:3px}
-.mini-mensaje.recibido{align-self:flex-start;background:rgba(255,255,255,.15);color:#fff;border-bottom-left-radius:3px}
-.mini-barra{display:flex;gap:8px;padding:10px 12px;flex-shrink:0;border-top:1px solid rgba(255,255,255,.1)}
-.mini-barra input{
-  flex:1;padding:9px 14px;border-radius:20px;border:none;outline:none;
-  background:rgba(255,255,255,.12);color:#fff;font-family:'Quicksand',sans-serif;font-size:13px;min-width:0;
-}
-.mini-barra input::placeholder{color:rgba(255,255,255,.5)}
-.mini-barra button{
-  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
-  background:var(--principal);color:#fff;font-size:15px;flex-shrink:0;
+body {
+  font-family: 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--fondo-claro);
+  color: var(--texto-claro);
+  min-height: 100vh;
+  min-height: 100dvh;
+  transition: background .4s, color .4s;
 }
 
-/* =====================================================
-   8. MULTIPANTALLA — se adapta a cada tamaño
-   ===================================================== */
-
-/* --- Tablet y escritorio chico (hasta 900px) --- */
-@media(max-width:900px){
-  .contenedor-login{grid-template-columns:1fr;max-width:460px}
-  .lado-izquierdo{padding:32px 28px}
-  .lado-izquierdo h2{font-size:22px}
-  .beneficios{display:none}
-  .lado-derecho{padding:32px 26px}
+body.oscuro {
+  background: var(--fondo-oscuro);
+  color: var(--texto-oscuro);
 }
 
-/* --- Móvil (hasta 600px) --- */
-@media(max-width:600px){
-  .titulo-principal{font-size:32px}
-  .contenedor-inicio{padding:36px 24px}
-  .barra-superior{padding:12px 16px}
-  .contenido{padding:18px 14px 40px}
-  .persona{padding:12px 14px}
-  .mensaje{max-width:85%}
+/* Botón del sol/luna */
+.btn-tema {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top));
+  right: 16px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--tarjeta-claro);
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+  transition: transform .2s, background .4s;
+}
+body.oscuro .btn-tema {
+  background: var(--tarjeta-oscuro);
+}
+.btn-tema:hover {
+  transform: scale(1.1) rotate(15deg);
+}
 
-  /* El panel de video pasa a ser una franja arriba del chat */
-  .panel-video{
-    top:64px;left:12px;right:12px;width:auto;
-    border-radius:16px;
+.btn-tema-inline {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--borde-claro);
+  background: var(--fondo-claro);
+  cursor: pointer;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: transform .2s, background .4s, border-color .4s;
+}
+body.oscuro .btn-tema-inline {
+  background: var(--fondo-oscuro);
+  border-color: var(--borde-oscuro);
+}
+.btn-tema-inline:hover {
+  transform: scale(1.08) rotate(12deg);
+}
+
+/* Burbujas decorativas */
+.burbuja {
+  position: fixed;
+  border-radius: 50%;
+  opacity: .35;
+  pointer-events: none;
+  z-index: 0;
+  animation: flotar 8s ease-in-out infinite;
+}
+.b1 { width: 180px; height: 180px; background: var(--principal); top: 8%; left: 6%; }
+.b2 { width: 120px; height: 120px; background: var(--secundario); bottom: 12%; right: 8%; animation-delay: 2s; }
+.b3 { width: 90px; height: 90px; background: var(--acento); top: 60%; left: 12%; animation-delay: 4s; }
+@keyframes flotar {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-25px) scale(1.05); }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes sonar {
+  0%, 100% { height: 6px; }
+  50% { height: 24px; }
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 32px;
+  font-weight: 400;
+}
+.logo-chico {
+  font-family: 'Pacifico', cursive;
+  font-size: 22px;
+  color: var(--principal);
+}
+
+/* Botón instalar PWA + guía Apple */
+.btn-instalar-pwa {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 20px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--principal), var(--principal-oscuro));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 126, 103, .4);
+}
+
+.guia-apple {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.guia-apple.visible {
+  display: flex;
+}
+.guia-apple-contenido {
+  background: var(--tarjeta-claro);
+  border-radius: 24px;
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  animation: pop .3s ease;
+}
+body.oscuro .guia-apple-contenido {
+  background: var(--tarjeta-oscuro);
+}
+.guia-apple-contenido h3 {
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+.guia-apple-contenido p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.guia-apple-contenido button {
+  margin-top: 12px;
+}
+
+/* ============== 1. INICIO (index.html) ============== */
+body.pagina-inicio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.contenedor-inicio {
+  position: relative;
+  z-index: 1;
+  background: var(--tarjeta-claro);
+  border-radius: 28px;
+  padding: 44px 34px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(255, 126, 103, .18);
+  transition: background .4s;
+}
+body.oscuro .contenedor-inicio {
+  background: var(--tarjeta-oscuro);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+}
+
+.titulo-principal {
+  color: var(--principal);
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  font-size: 15px;
+  color: var(--texto-suave-claro);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+body.oscuro .subtitulo {
+  color: var(--texto-suave-oscuro);
+}
+
+.botones-inicio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.boton-principal {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--principal), var(--principal-oscuro));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 126, 103, .35);
+  transition: transform .2s, box-shadow .2s;
+}
+.boton-principal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 126, 103, .45);
+}
+
+.boton-secundario {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  color: var(--principal);
+  border: 2px solid var(--principal);
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.boton-secundario:hover {
+  background: var(--principal);
+  color: #fff;
+}
+
+.caracteristicas {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 1px solid var(--borde-claro);
+}
+body.oscuro .caracteristicas {
+  border-top-color: var(--borde-oscuro);
+}
+.caracteristicas .item {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto-suave-claro);
+}
+body.oscuro .caracteristicas .item {
+  color: var(--texto-suave-oscuro);
+}
+
+/* ============== 2. LOGIN (login.html) ============== */
+body.pagina-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.contenedor-login {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 880px;
+  background: var(--tarjeta-claro);
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(255, 126, 103, .18);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  transition: background .4s;
+}
+body.oscuro .contenedor-login {
+  background: var(--tarjeta-oscuro);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+}
+
+.lado-izquierdo {
+  background: linear-gradient(135deg, var(--principal) 0%, var(--acento) 100%);
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+}
+.lado-izquierdo .logo {
+  margin-bottom: 14px;
+}
+.lado-izquierdo h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.lado-izquierdo > p {
+  font-size: 15px;
+  opacity: .95;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.beneficios p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.beneficios .icono {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, .25);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.enlace-inicio {
+  margin-top: 22px;
+}
+.enlace-inicio a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  opacity: .92;
+}
+
+.lado-derecho {
+  padding: 44px 38px;
+}
+
+.pestañas {
+  display: flex;
+  background: var(--fondo-claro);
+  border-radius: 14px;
+  padding: 5px;
+  margin-bottom: 28px;
+  transition: background .4s;
+}
+body.oscuro .pestañas {
+  background: var(--fondo-oscuro);
+}
+
+.pestaña {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--texto-suave-claro);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .3s;
+}
+body.oscuro .pestaña {
+  color: var(--texto-suave-oscuro);
+}
+.pestaña.activa {
+  background: var(--principal);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 126, 103, .4);
+}
+
+.formulario {
+  display: none;
+}
+.formulario.visible {
+  display: block;
+}
+
+.campo {
+  margin-bottom: 18px;
+  position: relative;
+}
+.campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.campo input {
+  width: 100%;
+  padding: 13px 44px 13px 16px;
+  border: 2px solid var(--borde-claro);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--fondo-claro);
+  color: var(--texto-claro);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+body.oscuro .campo input {
+  background: var(--fondo-oscuro);
+  border-color: var(--borde-oscuro);
+  color: var(--texto-oscuro);
+}
+.campo input:focus {
+  border-color: var(--principal);
+  box-shadow: 0 0 0 4px rgba(255, 126, 103, .15);
+}
+.campo input.error {
+  border-color: var(--error);
+}
+.campo .error {
+  display: none;
+  color: var(--error);
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 600;
+}
+.campo .error.visible {
+  display: block;
+}
+
+.ojito {
+  position: absolute;
+  right: 12px;
+  top: 35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.boton {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--principal), var(--principal-oscuro));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 126, 103, .35);
+  transition: transform .2s, box-shadow .2s;
+}
+.boton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 126, 103, .45);
+}
+
+.exito {
+  display: none;
+  text-align: center;
+  padding: 30px 10px;
+}
+.exito.visible {
+  display: block;
+}
+.exito .check {
+  width: 70px;
+  height: 70px;
+  background: var(--ok);
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #fff;
+  animation: pop .5s ease;
+}
+.exito h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+.exito p {
+  font-size: 14px;
+  color: var(--texto-suave-claro);
+}
+body.oscuro .exito p {
+  color: var(--texto-suave-oscuro);
+}
+
+/* ============== 3. SALA (sala.html) ============== */
+.barra-superior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  padding-top: calc(14px + env(safe-area-inset-top));
+  background: var(--tarjeta-claro);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 10px;
+  transition: background .4s;
+}
+body.oscuro .barra-superior {
+  background: var(--tarjeta-oscuro);
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.chip-usuario {
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.boton-salir {
+  padding: 7px 14px;
+  border: 2px solid var(--borde-claro);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--texto-claro);
+  font-size: 13px;
+  font-weight: 700;
+  transition: all .2s;
+}
+body.oscuro .boton-salir {
+  border-color: var(--borde-oscuro);
+  color: var(--texto-oscuro);
+}
+.boton-salir:hover {
+  border-color: var(--principal);
+  color: var(--principal);
+}
+
+.contenido {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 18px 60px;
+}
+
+.bienvenida {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.descripcion {
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-suave-claro);
+  margin-bottom: 18px;
+}
+body.oscuro .descripcion {
+  color: var(--texto-suave-oscuro);
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--tarjeta-claro);
+  border: 2px solid var(--borde-claro);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  transition: all .2s;
+}
+body.oscuro .buscador {
+  background: var(--tarjeta-oscuro);
+  border-color: var(--borde-oscuro);
+}
+.buscador:focus-within {
+  border-color: var(--principal);
+  box-shadow: 0 0 0 4px rgba(255, 126, 103, .15);
+}
+.buscador input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--texto-claro);
+}
+body.oscuro .buscador input {
+  color: var(--texto-oscuro);
+}
+
+.lista-personas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.persona {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--tarjeta-claro);
+  border: 2px solid transparent;
+  border-radius: 18px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all .25s;
+  animation: aparecer .4s ease;
+}
+body.oscuro .persona {
+  background: var(--tarjeta-oscuro);
+}
+.persona:hover {
+  border-color: var(--principal);
+  transform: translateX(6px);
+  box-shadow: 0 6px 18px rgba(255, 126, 103, .18);
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acento), var(--principal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  position: relative;
+}
+.avatar .estado {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--en-linea);
+  border: 3px solid var(--tarjeta-claro);
+}
+body.oscuro .avatar .estado {
+  border-color: var(--tarjeta-oscuro);
+}
+
+.info-persona {
+  flex: 1;
+  min-width: 0;
+}
+.nombre-persona {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.estado-persona {
+  font-size: 13px;
+  color: var(--en-linea);
+  font-weight: 600;
+}
+
+.flecha {
+  color: var(--texto-suave-claro);
+  font-size: 20px;
+  font-weight: 700;
+}
+body.oscuro .flecha {
+  color: var(--texto-suave-oscuro);
+}
+
+.sin-resultados {
+  text-align: center;
+  padding: 46px 20px;
+  color: var(--texto-suave-claro);
+  font-size: 15px;
+  line-height: 1.6;
+}
+body.oscuro .sin-resultados {
+  color: var(--texto-suave-oscuro);
+}
+.sin-resultados .emoji {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ============== 4. CHAT + CÁMARA DIVIDIDA (chat.html) ============== */
+body.pagina-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.barra-chat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  padding-top: calc(12px + env(safe-area-inset-top));
+  background: var(--tarjeta-claro);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+  flex-shrink: 0;
+  transition: background .4s;
+}
+body.oscuro .barra-chat {
+  background: var(--tarjeta-oscuro);
+}
+
+.boton-volver {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--fondo-claro);
+  color: var(--texto-claro);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform .2s, background .4s;
+}
+body.oscuro .boton-volver {
+  background: var(--fondo-oscuro);
+  color: var(--texto-oscuro);
+}
+.boton-volver:hover {
+  transform: translateX(-3px);
+}
+
+.info-amiga {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acento), var(--principal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+  position: relative;
+  flex-shrink: 0;
+}
+.chat-avatar .estado {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--en-linea);
+  border: 3px solid var(--tarjeta-claro);
+}
+body.oscuro .chat-avatar .estado {
+  border-color: var(--tarjeta-oscuro);
+}
+
+.chat-info {
+  flex: 1;
+  min-width: 0;
+}
+.chat-nombre {
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-estado {
+  font-size: 12px;
+  color: var(--en-linea);
+  font-weight: 600;
+}
+
+.boton-llamada {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ok);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(46, 196, 182, .4);
+  transition: transform .2s;
+}
+.boton-llamada:hover {
+  transform: scale(1.08);
+}
+
+/* Panel de cámara oculto por defecto */
+.zona-video {
+  display: none;
+  position: relative;
+  background: linear-gradient(135deg, #2A2640, #1E1B2E);
+  color: #fff;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* División 50% arriba cámara / 50% abajo mensajes */
+body.pagina-chat.camara-activa .zona-video {
+  display: flex;
+  flex: 1 1 50%;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+body.pagina-chat.camara-activa .caja-mensajes {
+  flex: 1 1 50%;
+  min-height: 0;
+}
+
+.video-remoto-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 34px;
+}
+
+.avatar-remoto-mini {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acento), var(--principal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  animation: latido 1.6s ease-in-out infinite;
+}
+
+.audio-remoto {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 22px;
+}
+.audio-remoto span {
+  width: 5px;
+  background: var(--ok);
+  border-radius: 3px;
+  animation: sonar .6s ease-in-out infinite;
+}
+.audio-remoto span:nth-child(1) { animation-delay: .1s; }
+.audio-remoto span:nth-child(2) { animation-delay: .3s; }
+.audio-remoto span:nth-child(3) { animation-delay: .5s; }
+.audio-remoto span:nth-child(4) { animation-delay: .2s; }
+.audio-remoto span:nth-child(5) { animation-delay: .4s; }
+
+.nombre-remoto-mini {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tiempo-video {
+  background: rgba(0, 0, 0, .55);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.video-propio-mini {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: clamp(84px, 24vw, 130px);
+  height: clamp(112px, 32vw, 170px);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid rgba(255, 255, 255, .28);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .4);
+}
+.video-propio-mini video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.sin-camara-mini {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  padding: 6px;
+  background: linear-gradient(135deg, #3D3858, #2A2640);
+}
+
+.controles-video-mini {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+}
+
+.btn-control-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, .2);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: transform .2s, background .2s;
+}
+.btn-control-mini:hover {
+  transform: scale(1.08);
+}
+.btn-control-mini.apagado,
+.btn-control-mini.colgar {
+  background: var(--peligro);
+}
+
+/* Mensajes */
+.caja-mensajes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mensaje {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  animation: aparecer .3s ease;
+  word-wrap: break-word;
+}
+.mensaje.enviado {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--principal), var(--principal-oscuro));
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.mensaje.recibido {
+  align-self: flex-start;
+  background: var(--tarjeta-claro);
+  color: var(--texto-claro);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+body.oscuro .mensaje.recibido {
+  background: var(--tarjeta-oscuro);
+  color: var(--texto-oscuro);
+}
+
+.hora-mensaje {
+  font-size: 10px;
+  opacity: .72;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.escribiendo {
+  padding: 0 18px 6px;
+  font-size: 12px;
+  color: var(--texto-suave-claro);
+  font-style: italic;
+  font-weight: 600;
+}
+body.oscuro .escribiendo {
+  color: var(--texto-suave-oscuro);
+}
+
+.barra-escribir {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  background: var(--tarjeta-claro);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, .06);
+  flex-shrink: 0;
+  transition: background .4s;
+}
+body.oscuro .barra-escribir {
+  background: var(--tarjeta-oscuro);
+}
+
+.barra-escribir input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 2px solid var(--borde-claro);
+  border-radius: 24px;
+  font-family: inherit;
+  font-size: 15px;
+  background: var(--fondo-claro);
+  color: var(--texto-claro);
+  outline: none;
+  transition: border-color .2s;
+}
+body.oscuro .barra-escribir input {
+  background: var(--fondo-oscuro);
+  border-color: var(--borde-oscuro);
+  color: var(--texto-oscuro);
+}
+.barra-escribir input:focus {
+  border-color: var(--principal);
+}
+
+.barra-escribir button[type="submit"] {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--principal), var(--principal-oscuro));
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 126, 103, .4);
+  transition: transform .2s;
+}
+.barra-escribir button[type="submit"]:hover {
+  transform: scale(1.08);
+}
+
+/* ============== 5. VIDEOLLAMADA COMPLETA (videollamada.html) ============== */
+body.pagina-videollamada {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+  background: linear-gradient(135deg, #2A2640, #1E1B2E);
+  color: #fff;
+  padding: 30px 20px calc(24px + env(safe-area-inset-bottom));
+  position: relative;
+}
+
+.caja-video-remota {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.avatar-remoto {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acento), var(--principal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 70px;
+  animation: latido 1.6s ease-in-out infinite;
+}
+
+.nombre-remoto {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.caja-video-propia {
+  position: absolute;
+  bottom: calc(105px + env(safe-area-inset-bottom));
+  right: 20px;
+  width: 130px;
+  height: 175px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
+}
+.caja-video-propia video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.sin-camara {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  padding: 10px;
+  background: linear-gradient(135deg, #3D3858, #2A2640);
+}
+
+.tiempo {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top));
+  background: rgba(0, 0, 0, .6);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.controles-llamada {
+  display: flex;
+  gap: 20px;
+  z-index: 2;
+}
+
+.control {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, .18);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+  transition: transform .2s, background .2s;
+}
+.control:hover {
+  transform: scale(1.08);
+}
+.control.colgar,
+.control.apagado {
+  background: var(--peligro);
+}
+
+/* ============== ADAPTACIÓN A TODAS LAS PANTALLAS ============== */
+
+/* Tablets y móviles medianos */
+@media (max-width: 760px) {
+  .contenedor-login {
+    grid-template-columns: 1fr;
+    max-width: 440px;
   }
-  .panel-video .video-cuerpo{aspect-ratio:16/9}
-  .caja-mensajes{padding-top:10px}
-
-  /* En videollamada, tu cámara más chica y el mini-chat ocupa más */
-  .caja-video-propia{width:90px;height:120px;bottom:100px;right:12px}
-  .mini-chat{left:10px;right:10px;bottom:100px}
-  .controles-llamada{gap:18px;padding:18px}
-  .control{width:52px;height:52px;font-size:20px}
-}
-
-/* --- Móvil muy angosto (hasta 380px) --- */
-@media(max-width:380px){
-  .info-amiga h3{font-size:14px}
-  .barra-escribir{padding:10px 12px;gap:8px}
-  .barra-escribir button{width:42px;height:42px}
-}
-
-/* --- Apaisado (landscape) en móvil: aprovechar el ancho --- */
-@media(max-height:500px) and (orientation:landscape){
-  .panel-video{
-    top:60px;right:12px;width:200px;
+  .lado-izquierdo {
+    padding: 30px 26px;
   }
-  .caja-video-propia{width:100px;height:130px;bottom:90px}
-  .controles-llamada{padding:14px;gap:16px}
-  .control{width:46px;height:46px;font-size:18px}
+  .lado-izquierdo h2 {
+    font-size: 22px;
+  }
+  .beneficios {
+    display: none;
+  }
+  .lado-derecho {
+    padding: 30px 24px;
+  }
 }
 
-/* --- Escritorio grande (más de 1200px): chat con video de lado --- */
-@media(min-width:1200px){
-  .pagina-chat.con-video .caja-mensajes{padding-right:290px}
-  .pagina-chat.con-video .barra-escribir{padding-right:290px}
+/* Teléfonos pequeños (iPhone SE, Android compactos) */
+@media (max-width: 420px) {
+  .contenedor-inicio {
+    padding: 32px 20px;
+  }
+  .logo {
+    font-size: 26px;
+  }
+  .barra-superior {
+    padding: 12px 14px;
+  }
+  .mensaje {
+    max-width: 86%;
+  }
+  .avatar-remoto-mini {
+    width: 54px;
+    height: 54px;
+    font-size: 26px;
+  }
+}
+
+/* Pantallas grandes (PC / monitores) */
+@media (min-width: 1024px) {
+  body.pagina-chat {
+    max-width: 960px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, .08);
+  }
+  .mensaje {
+    max-width: 62%;
+  }
+}
+
+/* Celular en horizontal (50% izquierda cámara / 50% derecha chat) */
+@media (max-height: 520px) and (orientation: landscape) {
+  body.pagina-chat.camara-activa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto auto;
+  }
+  body.pagina-chat.camara-activa .barra-chat {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  body.pagina-chat.camara-activa .zona-video {
+    grid-column: 1;
+    grid-row: 2 / 5;
+    height: 100%;
+  }
+  body.pagina-chat.camara-activa .caja-mensajes {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+  }
+  body.pagina-chat.camara-activa .escribiendo {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  body.pagina-chat.camara-activa .barra-escribir {
+    grid-column: 2;
+    grid-row: 4;
+  }
 }

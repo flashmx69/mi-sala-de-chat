@@ -1,6 +1,5 @@
-// service-worker.js — guarda los archivos para que la app funcione sin internet.
-const NOMBRE_CACHE = 'sala-amigas-v6';
-const ARCHIVOS_CACHE = [
+const NOMBRE_CACHE = 'sala-amigas-v5';
+const ARCHIVOS_CORE = [
   './',
   './index.html',
   './login.html',
@@ -9,46 +8,60 @@ const ARCHIVOS_CACHE = [
   './videollamada.html',
   './estilos.css',
   './app.js',
-  './manifest.json',
-  './icono.svg',
-  './icono-96.png',
+  './manifest.json'
+];
+const ARCHIVOS_OPCIONALES = [
   './icono-192.png',
-  './icono-512.png'
+  './icono-512.png',
+  './icono.svg'
 ];
 
-// Instalar: guardar todos los archivos en el caché
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(NOMBRE_CACHE)
-      .then(cache => cache.addAll(ARCHIVOS_CACHE))
+      .then(async cache => {
+        await cache.addAll(ARCHIVOS_CORE);
+        await Promise.allSettled(
+          ARCHIVOS_OPCIONALES.map(url => cache.add(url))
+        );
+      })
       .then(() => self.skipWaiting())
+      .catch(err => console.error('❌ Error al cachear:', err))
   );
 });
 
-// Activar: borrar cachés viejas
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(nombres => {
-      return Promise.all(
+    caches.keys().then(nombres =>
+      Promise.all(
         nombres.filter(n => n !== NOMBRE_CACHE).map(n => caches.delete(n))
-      );
-    }).then(() => self.clients.claim())
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Recuperar: si está en caché, usarlo; si no, bajarlo y guardarlo.
 self.addEventListener('fetch', e => {
-  // No guardar en caché las llamadas a Supabase (datos en tiempo real)
-  if (e.request.url.includes('supabase')) return;
+  const url = new URL(e.request.url);
+
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) {
+    return;
+  }
+
   e.respondWith(
-    caches.match(e.request).then(respCache => {
-      return respCache || fetch(e.request).then(respRed => {
-        if (e.request.method === 'GET' && respRed.status === 200) {
+    fetch(e.request)
+      .then(respRed => {
+        if (respRed && respRed.status === 200) {
           const copia = respRed.clone();
           caches.open(NOMBRE_CACHE).then(cache => cache.put(e.request, copia));
         }
         return respRed;
-      });
-    })
+      })
+      .catch(async () => {
+        const enCache = await caches.match(e.request);
+        if (enCache) return enCache;
+        if (e.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+      })
   );
 });

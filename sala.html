@@ -2,32 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#FF7E67">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
+  <link rel="apple-touch-icon" href="icono-192.png">
+  <link rel="icon" type="image/png" href="icono-192.png">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" sizes="96x96" href="icono-96.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
   <title>Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body class="pagina-sala">
   <nav class="barra-superior">
-    <span class="logo">🌸 Sala</span>
+    <span class="logo-chico">🌸 Sala</span>
     <div class="info-usuario">
-      <span id="nombreUsuario">Tú</span>
-      <a href="login.html" class="boton-salir">Salir</a>
+      <button type="button" class="btn-tema-inline" id="btnTema" aria-label="Cambiar tema">🌙</button>
+      <span id="nombreUsuario" class="chip-usuario">Tú</span>
+      <a href="login.html" id="btnSalir" class="boton-salir">Salir</a>
     </div>
   </nav>
 
   <main class="contenido">
-    <h2>¡Hola, <span id="saludoNombre">amiga</span>! 👋</h2>
+    <h2 class="bienvenida">¡Hola, <span id="saludoNombre">amiga</span>! 👋</h2>
     <p class="descripcion">Estas son las personas conectadas ahora mismo:</p>
 
     <div class="buscador">
-      <input type="text" id="buscar" placeholder="🔍 Buscar persona…">
+      <span class="icono-buscar">🔍</span>
+      <input type="text" id="buscar" placeholder="Buscar persona...">
     </div>
 
     <div class="lista-personas" id="listaPersonas">
-      <div style="text-align:center; padding:40px; color:#888;">Cargando…</div>
+      <div class="sin-resultados">Cargando...</div>
     </div>
   </main>
 

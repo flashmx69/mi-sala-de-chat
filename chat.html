@@ -2,62 +2,65 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#FF7E67">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
+  <link rel="apple-touch-icon" href="icono-192.png">
+  <link rel="icon" type="image/png" href="icono-192.png">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" sizes="96x96" href="icono-96.png">
-  <title>Chat · Sala de Amigas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <title>Chat — Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body class="pagina-chat">
-
-  <!-- Barra de arriba: volver, quién es, y botón de video 📹 -->
   <div class="barra-chat">
     <a href="sala.html" class="boton-volver">←</a>
     <div class="info-amiga">
-      <div class="avatar-grande" id="avatarAmiga">👩</div>
-      <div>
-        <h3 id="nombreAmiga">Amiga</h3>
-        <p class="estado">🟢 Conectada</p>
+      <div class="chat-avatar" id="avatarAmiga">👩<span class="estado"></span></div>
+      <div class="chat-info">
+        <h3 id="nombreAmiga" class="chat-nombre">Amiga</h3>
+        <p class="chat-estado">🟢 Conectada</p>
       </div>
     </div>
-    <button class="boton-llamada" id="btnVideo" title="Videollamada">📹</button>
+    <button type="button" class="btn-tema-inline" id="btnTema" aria-label="Cambiar tema">🌙</button>
+    <button type="button" id="btnToggleCamara" class="boton-llamada" title="Activar o desactivar cámara">📹</button>
   </div>
 
-  <!-- PANEL DE VIDEO INTEGRADO (la novedad):
-       Se abre al tocar 📹. Muestra la cámara de la otra persona (arriba)
-       y la tuya (esquinita). Los mensajes siguen funcionando abajo. -->
-  <div class="panel-video" id="panelVideo">
-    <div class="video-cuerpo">
-      <div class="video-remoto-spot">
-        <div class="avatar-remoto" id="avatarRemotoChico">👩</div>
-        <div class="nombre-remoto" id="nombreRemotoChico">Amiga</div>
-        <div class="ondas"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="nota-camara">Esperando su cámara…</div>
-      </div>
-      <div class="mi-camara-chica">
-        <video id="miCamaraChica" autoplay playsinline muted></video>
-        <div class="sin-camara-chica" id="sinCamaraChica">📷</div>
-      </div>
+  <!-- Mitad para cámara (50% arriba en vertical / 50% izquierda en horizontal) -->
+  <div class="zona-video" id="zonaVideo">
+    <div class="video-remoto-mini">
+      <div class="avatar-remoto-mini">👩</div>
+      <div class="audio-remoto"><span></span><span></span><span></span><span></span><span></span></div>
+      <span id="nombreRemoto" class="nombre-remoto-mini">Amiga</span>
+      <span class="tiempo-video" id="tiempo">00:00</span>
     </div>
-    <div class="video-controles">
-      <button id="btnMicChico" title="Micrófono">🎤</button>
-      <button id="btnMinimizar" title="Minimizar">➖</button>
-      <button id="btnCamChico" title="Cámara">📹</button>
-      <button class="cerrar-video" id="btnCerrarVideo" title="Cerrar video">✕</button>
+
+    <div class="video-propio-mini">
+      <video id="miCamara" autoplay playsinline muted></video>
+      <div class="sin-camara-mini" id="sinCamara">📷 Iniciando cámara...</div>
+    </div>
+
+    <div class="controles-video-mini">
+      <button type="button" class="btn-control-mini" id="btnMicrofono" title="Micrófono">🎤</button>
+      <button type="button" class="btn-control-mini colgar" id="btnColgar" title="Cerrar cámara">✕</button>
+      <button type="button" class="btn-control-mini" id="btnCamara" title="Cámara">📹</button>
     </div>
   </div>
 
-  <!-- Mensajes (siguen visibles y escribibles con el video abierto) -->
+  <!-- Mitad para mensajes (50% al activar cámara, 100% si está apagada) -->
   <div class="caja-mensajes" id="cajaMensajes"></div>
-  <p class="escribiendo" id="indicadorEscribiendo"></p>
+  <p class="escribiendo" id="indicadorEscribiendo" style="display:none;">escribiendo...</p>
 
   <form class="barra-escribir" id="formMensaje">
-    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje…" autocomplete="off">
-    <button type="submit">➤</button>
+    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje..." autocomplete="off">
+    <button type="submit" aria-label="Enviar">➤</button>
   </form>
 
-  <!-- Librería de Supabase + nuestra lógica (app.js activa PWA en todas las páginas) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="app.js"></script>
 </body>
