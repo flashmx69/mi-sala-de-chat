@@ -1,87 +1,68 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="theme-color" content="#FF7E67">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
-  <link rel="apple-touch-icon" href="icono-192.png">
-  <link rel="icon" type="image/png" href="icono-192.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat — Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="pagina-chat">
-  <div class="barra-chat">
-    <a href="sala.html" id="btnVolverSala" class="boton-volver">←</a>
-    <div class="info-amiga">
-      <div class="chat-avatar" id="avatarAmiga">👩<span class="estado"></span></div>
-      <div class="chat-info">
-        <h3 id="nombreAmiga" class="chat-nombre">Amiga</h3>
-        <p id="estadoChatAmiga" class="chat-estado">🟢 Chat privado 1 a 1</p>
+<body>
+
+<div class="pagina-chat">
+
+  <!-- 📹 COLUMNA IZQUIERDA: VIDEO -->
+  <div class="col-video" id="colVideo">
+    <button class="btn-cerrar-video" id="btnCerrarVideo">✕</button>
+    
+    <div class="sin-video" id="sinVideo">
+      <div class="avatar">👩</div>
+      <h3>Esperando video...</h3>
+      <p>Conectando cámara</p>
+    </div>
+    
+    <video id="videoRemoto" class="video-principal" autoplay playsinline style="display:none;"></video>
+    
+    <div class="video-chico" id="videoChico">
+      <video id="videoLocal" autoplay muted playsinline></video>
+    </div>
+  </div>
+
+  <!-- 💬 COLUMNA DERECHA: CHAT -->
+  <div class="col-chat">
+    <!-- Barra superior -->
+    <div class="barra-arriba">
+      <a href="sala.html" class="btn-atras">←</a>
+      <div class="avatar">👩</div>
+      <div class="info-chat">
+        <h4 id="nombreAmiga">Amiga</h4>
+        <div class="estado">● En línea</div>
       </div>
+      <button class="btn-llamada" id="btnLlamada">📹</button>
     </div>
-    <button type="button" class="btn-tema-inline" id="btnTema" aria-label="Cambiar tema">🌙</button>
-    <button type="button" id="btnToggleCamara" class="boton-llamada" title="Activar o desactivar cámara">📹</button>
-  </div>
 
-  <!-- Aviso cuando una tercera persona intenta entrar y quiere chatear contigo -->
-  <div id="avisoTercero" class="aviso-tercero">
-    <span id="textoTercero">🔔 Alguien quiere chatear contigo</span>
-    <button type="button" id="btnCerrarTercero" class="btn-cerrar-aviso">Entendido</button>
-  </div>
+    <!-- Mensajes -->
+    <div class="caja-msj" id="cajaMsj">
+      <div class="msj mio">¡Hola! ¿Cómo estás?<div class="hora">21:45</div></div>
+      <div class="msj tuyo">¡Bien! Aquí andamos probando 😊<div class="hora">21:46</div></div>
+    </div>
 
-  <!-- Aviso de llamada de cámara entrante -->
-  <div id="avisoLlamada" class="aviso-llamada">
-    <span id="textoLlamada">📹 Tu amiga quiere activar la cámara...</span>
-    <div class="acciones-llamada">
-      <button type="button" id="btnContestar" class="btn-contestar">Contestar</button>
-      <button type="button" id="btnRechazar" class="btn-rechazar">Rechazar</button>
+    <!-- Barra escribir -->
+    <div class="barra-abajo">
+      <input type="text" id="inputMsj" placeholder="Escribe un mensaje...">
+      <button class="btn-enviar" id="btnEnviar">➤</button>
     </div>
   </div>
 
-  <!-- Cámara: 50% izquierda en PC / 50% arriba en celular vertical -->
-  <div class="zona-video" id="zonaVideo">
-    <video id="videoRemoto" class="video-remoto-stream" autoplay playsinline></video>
+</div>
 
-    <div class="video-remoto-mini" id="esperandoVideo">
-      <div class="avatar-remoto-mini">👩</div>
-      <div class="audio-remoto"><span></span><span></span><span></span><span></span><span></span></div>
-      <span id="nombreRemoto" class="nombre-remoto-mini">Amiga</span>
-      <span id="estadoVideo" class="estado-video">Conectando cámara...</span>
-    </div>
+<script>
+// Obtener nombre desde la URL
+const params = new URLSearchParams(window.location.search);
+const nombre = params.get('nombre') || 'Amiga';
+document.getElementById('nombreAmiga').textContent = nombre;
 
-    <span class="tiempo-video" id="tiempo">00:00</span>
-    <button type="button" id="btnActivarAudio" class="btn-activar-audio" style="display:none;">🔊 Activar sonido</button>
-
-    <div class="video-propio-mini">
-      <video id="miCamara" autoplay playsinline muted></video>
-      <div class="sin-camara-mini" id="sinCamara">📷 Iniciando cámara...</div>
-    </div>
-
-    <div class="controles-video-mini">
-      <button type="button" class="btn-control-mini" id="btnMicrofono" title="Micrófono">🎤</button>
-      <button type="button" class="btn-control-mini colgar" id="btnColgar" title="Cerrar cámara">✕</button>
-      <button type="button" class="btn-control-mini" id="btnCamara" title="Cámara">📹</button>
-    </div>
-  </div>
-
-  <!-- Chat: 50% derecha en PC / 50% abajo en celular vertical -->
-  <div class="caja-mensajes" id="cajaMensajes"></div>
-  <p class="escribiendo" id="indicadorEscribiendo" style="display:none;">escribiendo...</p>
-
-  <form class="barra-escribir" id="formMensaje">
-    <input type="text" id="entradaMensaje" placeholder="Escribe un mensaje..." autocomplete="off">
-    <button type="submit" aria-label="Enviar">➤</button>
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+// Enviar mensajes
+const inputMsj = document.getElementById('inputMsj');
+const cajaMsj = document.getElementById('cajaMsj');
+const btnEnviar = document.getElementById('btnEnviar
