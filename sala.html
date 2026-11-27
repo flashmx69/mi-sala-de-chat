@@ -1,63 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#FF7E67">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
-  <link rel="apple-touch-icon" href="icono-192.png">
-  <link rel="icon" type="image/png" href="icono-192.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  <title>Sala de Amigas</title>
-  <link rel="stylesheet" href="estilos.css">
-</head>
-<body class="pagina-sala">
-  <nav class="barra-superior">
-    <span class="logo-chico">🌸 Sala</span>
-    <div class="info-usuario">
-      <button type="button" class="btn-tema-inline" id="btnTema" aria-label="Cambiar tema">🌙</button>
-      <span id="nombreUsuario" class="chip-usuario">Tú</span>
-      <a href="login.html" id="btnSalir" class="boton-salir">Salir</a>
-    </div>
-  </nav>
-
-  <!-- Aviso cuando alguien está ocupada o rechaza -->
-  <div id="avisoSala" class="aviso-sala"></div>
-
-  <!-- Invitación cuando alguien quiere chatear contigo -->
-  <div id="solicitudChat" class="modal-solicitud">
-    <div class="modal-solicitud-interior">
-      <div class="avatar-solicitud">💬</div>
-      <h3 id="tituloSolicitud">Quieren chatear contigo</h3>
-      <p id="textoSolicitud">Una amiga quiere iniciar un chat 1 a 1 contigo.</p>
-      <div class="botones-solicitud">
-        <button type="button" id="btnAceptarChat" class="btn-aceptar-chat">Aceptar</button>
-        <button type="button" id="btnRechazarChat" class="btn-rechazar-chat">Rechazar</button>
-      </div>
+<!-- ALERTA DE INVITACIÓN -->
+<div class="alerta-fondo" id="alertaInvitacion">
+  <div class="alerta-caja">
+    <div class="avatar">💬</div>
+    <h3>¿Iniciar chat?</h3>
+    <p>Alguien quiere chatear contigo</p>
+    <div class="alerta-botones">
+      <button class="btn-no" id="btnCancelar">Cancelar</button>
+      <button class="btn-ok" id="btnAceptar">Aceptar</button>
     </div>
   </div>
+</div>
 
-  <main class="contenido">
-    <h2 class="bienvenida">¡Hola, <span id="saludoNombre">amiga</span>! 👋</h2>
-    <p class="descripcion">Chats exclusivos 1 a 1. Toca a alguien disponible para chatear:</p>
+<script>
+// Alerta de invitación
+const alerta = document.getElementById('alertaInvitacion');
 
-    <div class="buscador">
-      <span class="icono-buscar">🔍</span>
-      <input type="text" id="buscar" placeholder="Buscar persona...">
-    </div>
+function mostrarInvitacion(){
+  alerta.classList.add('mostrar');
+}
 
-    <div class="lista-personas" id="listaPersonas">
-      <div class="sin-resultados">Cargando...</div>
-    </div>
-  </main>
+function cerrarInvitacion(){
+  alerta.classList.remove('mostrar');
+}
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+document.getElementById('btnAceptar').addEventListener('click', ()=>{
+  window.location.href = 'chat.html';
+});
+document.getElementById('btnCancelar').addEventListener('click', cerrarInvitacion);
+
+// Al hacer clic en una persona → muestra alerta primero
+document.querySelectorAll('.persona').forEach(p=>{
+  p.addEventListener('click', mostrarInvitacion);
+});
+</script>
