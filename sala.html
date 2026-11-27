@@ -1,9 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sala Principal</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="pagina-sala">
+  <!-- Barra superior -->
+  <div class="barra-sup">
+    <span class="logo">💬 Sala de Amigas</span>
+    <button class="btn-salir" onclick="window.location.href='index.html'">Salir</button>
+  </div>
+
+  <!-- Contenido -->
+  <div class="contenido">
+    <h2>Personas en línea</h2>
+    <p class="desc">Toca a alguien para iniciar un chat</p>
+    
+    <div class="buscador">
+      <span>🔍</span>
+      <input type="text" placeholder="Buscar persona...">
+    </div>
+    
+    <div class="lista-personas">
+      <div class="persona" data-nombre="María">
+        <div class="avatar">👩</div>
+        <div class="datos-persona">
+          <div class="nombre">María</div>
+          <div class="estado">● En línea</div>
+        </div>
+      </div>
+      
+      <div class="persona" data-nombre="Ana">
+        <div class="avatar">👧</div>
+        <div class="datos-persona">
+          <div class="nombre">Ana</div>
+          <div class="estado">● En línea</div>
+        </div>
+      </div>
+      
+      <div class="persona" data-nombre="flashmx69">
+        <div class="avatar">👨</div>
+        <div class="datos-persona">
+          <div class="nombre">flashmx69</div>
+          <div class="estado">● En línea</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ALERTA DE INVITACIÓN -->
 <div class="alerta-fondo" id="alertaInvitacion">
   <div class="alerta-caja">
     <div class="avatar">💬</div>
     <h3>¿Iniciar chat?</h3>
-    <p>Alguien quiere chatear contigo</p>
+    <p id="textoInvitacion">Alguien quiere chatear contigo</p>
     <div class="alerta-botones">
       <button class="btn-no" id="btnCancelar">Cancelar</button>
       <button class="btn-ok" id="btnAceptar">Aceptar</button>
@@ -12,24 +68,32 @@
 </div>
 
 <script>
-// Alerta de invitación
 const alerta = document.getElementById('alertaInvitacion');
+let nombreSeleccionado = '';
 
-function mostrarInvitacion(){
+function mostrarInvitacion(nombre){
+  nombreSeleccionado = nombre;
+  document.getElementById('textoInvitacion').textContent = nombre + ' quiere chatear contigo';
   alerta.classList.add('mostrar');
 }
 
 function cerrarInvitacion(){
   alerta.classList.remove('mostrar');
+  nombreSeleccionado = '';
 }
 
 document.getElementById('btnAceptar').addEventListener('click', ()=>{
-  window.location.href = 'chat.html';
+  window.location.href = 'chat.html?nombre=' + encodeURIComponent(nombreSeleccionado);
 });
 document.getElementById('btnCancelar').addEventListener('click', cerrarInvitacion);
 
-// Al hacer clic en una persona → muestra alerta primero
 document.querySelectorAll('.persona').forEach(p=>{
-  p.addEventListener('click', mostrarInvitacion);
+  p.addEventListener('click', ()=>{
+    const nombre = p.getAttribute('data-nombre');
+    mostrarInvitacion(nombre);
+  });
 });
 </script>
+
+</body>
+</html>
