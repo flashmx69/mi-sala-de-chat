@@ -2,98 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#FF7E67">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
-  <link rel="apple-touch-icon" href="icono-192.png">
-  <link rel="icon" type="image/png" href="icono-192.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sala de Amigas</title>
   <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="pagina-inicio">
-  <button type="button" class="btn-tema" id="btnTema" aria-label="Cambiar tema">🌙</button>
+<body>
 
-  <div class="burbuja b1"></div>
-  <div class="burbuja b2"></div>
-  <div class="burbuja b3"></div>
-
-  <div class="contenedor-inicio">
-    <h1 class="titulo-principal logo">🌸 Sala de Amigas</h1>
-    <p class="subtitulo">Conéctate y charla con quienes más quieres ✨</p>
-    
-    <div class="botones-inicio">
-      <a href="login.html" class="boton-principal">Iniciar Sesión</a>
-      <a href="login.html?modo=registro" class="boton-secundario">Registrarme</a>
-    </div>
-    
-    <div class="caracteristicas">
-      <div class="item">💬 Chats reales</div>
-      <div class="item">📹 Videollamadas</div>
-      <div class="item">🔒 Seguro</div>
-    </div>
+<div class="pagina-inicio">
+  <h1 class="titulo">💬 Sala de Amigas</h1>
+  <p class="subtitulo">Conéctate y chatea con tus amigas en tiempo real</p>
+  
+  <div class="botones">
+    <a href="login.html" class="btn-principal">Entrar a la sala</a>
+    <button class="btn-secundario">Conocer más</button>
   </div>
+</div>
 
-  <!-- Guía visual para instalar en Apple iPhone / iPad -->
-  <div id="guiaApple" class="guia-apple">
-    <div class="guia-apple-contenido">
-      <h3>📲 Instalar en iPhone / iPad</h3>
-      <p>1. Toca el botón <strong>Compartir</strong> (cuadro con flecha ⬆️) en Safari.</p>
-      <p>2. Selecciona <strong>"Agregar a pantalla de inicio"</strong>.</p>
-      <p>3. Toca <strong>"Agregar"</strong> arriba a la derecha.</p>
-      <button type="button" id="btnCerrarGuiaApple" class="boton-principal">Entendido</button>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
-  <script>
-    let eventoInstalar = null;
-
-    function crearBotonInstalar(texto, alHacerClic) {
-      if (document.getElementById('btnInstalarPWA')) return;
-      const boton = document.createElement('button');
-      boton.id = 'btnInstalarPWA';
-      boton.className = 'btn-instalar-pwa';
-      boton.textContent = texto;
-      boton.onclick = () => alHacerClic(boton);
-      document.body.appendChild(boton);
-    }
-
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault();
-      eventoInstalar = e;
-      crearBotonInstalar('📲 Instalar App', boton => {
-        if (!eventoInstalar) return;
-        eventoInstalar.prompt();
-        eventoInstalar.userChoice.then(respuesta => {
-          if (respuesta.outcome === 'accepted') boton.remove();
-          eventoInstalar = null;
-        });
-      });
-    });
-
-    const esApple = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const yaInstalada = window.navigator.standalone === true ||
-                        window.matchMedia('(display-mode: standalone)').matches;
-
-    if (esApple && !yaInstalada) {
-      const guia = document.getElementById('guiaApple');
-      const btnCerrar = document.getElementById('btnCerrarGuiaApple');
-      window.addEventListener('load', () => {
-        crearBotonInstalar('📲 Instalar en Apple', () => {
-          if (guia) guia.classList.add('visible');
-        });
-      });
-      if (btnCerrar && guia) {
-        btnCerrar.addEventListener('click', () => guia.classList.remove('visible'));
-      }
-    }
-  </script>
 </body>
 </html>
