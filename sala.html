@@ -27,9 +27,25 @@
     </div>
   </nav>
 
+  <!-- Aviso cuando alguien está ocupada o rechaza -->
+  <div id="avisoSala" class="aviso-sala"></div>
+
+  <!-- Invitación cuando alguien quiere chatear contigo -->
+  <div id="solicitudChat" class="modal-solicitud">
+    <div class="modal-solicitud-interior">
+      <div class="avatar-solicitud">💬</div>
+      <h3 id="tituloSolicitud">Quieren chatear contigo</h3>
+      <p id="textoSolicitud">Una amiga quiere iniciar un chat 1 a 1 contigo.</p>
+      <div class="botones-solicitud">
+        <button type="button" id="btnAceptarChat" class="btn-aceptar-chat">Aceptar</button>
+        <button type="button" id="btnRechazarChat" class="btn-rechazar-chat">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
   <main class="contenido">
     <h2 class="bienvenida">¡Hola, <span id="saludoNombre">amiga</span>! 👋</h2>
-    <p class="descripcion">Estas son las personas conectadas ahora mismo:</p>
+    <p class="descripcion">Chats exclusivos 1 a 1. Toca a alguien disponible para chatear:</p>
 
     <div class="buscador">
       <span class="icono-buscar">🔍</span>

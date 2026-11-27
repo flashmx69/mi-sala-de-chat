@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="theme-color" content="#FF7E67">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -19,26 +19,46 @@
 </head>
 <body class="pagina-chat">
   <div class="barra-chat">
-    <a href="sala.html" class="boton-volver">←</a>
+    <a href="sala.html" id="btnVolverSala" class="boton-volver">←</a>
     <div class="info-amiga">
       <div class="chat-avatar" id="avatarAmiga">👩<span class="estado"></span></div>
       <div class="chat-info">
         <h3 id="nombreAmiga" class="chat-nombre">Amiga</h3>
-        <p class="chat-estado">🟢 Conectada</p>
+        <p id="estadoChatAmiga" class="chat-estado">🟢 Chat privado 1 a 1</p>
       </div>
     </div>
     <button type="button" class="btn-tema-inline" id="btnTema" aria-label="Cambiar tema">🌙</button>
     <button type="button" id="btnToggleCamara" class="boton-llamada" title="Activar o desactivar cámara">📹</button>
   </div>
 
-  <!-- Mitad para cámara (50% arriba en vertical / 50% izquierda en horizontal) -->
+  <!-- Aviso cuando una tercera persona intenta entrar y quiere chatear contigo -->
+  <div id="avisoTercero" class="aviso-tercero">
+    <span id="textoTercero">🔔 Alguien quiere chatear contigo</span>
+    <button type="button" id="btnCerrarTercero" class="btn-cerrar-aviso">Entendido</button>
+  </div>
+
+  <!-- Aviso de llamada de cámara entrante -->
+  <div id="avisoLlamada" class="aviso-llamada">
+    <span id="textoLlamada">📹 Tu amiga quiere activar la cámara...</span>
+    <div class="acciones-llamada">
+      <button type="button" id="btnContestar" class="btn-contestar">Contestar</button>
+      <button type="button" id="btnRechazar" class="btn-rechazar">Rechazar</button>
+    </div>
+  </div>
+
+  <!-- Cámara: 50% izquierda en PC / 50% arriba en celular vertical -->
   <div class="zona-video" id="zonaVideo">
-    <div class="video-remoto-mini">
+    <video id="videoRemoto" class="video-remoto-stream" autoplay playsinline></video>
+
+    <div class="video-remoto-mini" id="esperandoVideo">
       <div class="avatar-remoto-mini">👩</div>
       <div class="audio-remoto"><span></span><span></span><span></span><span></span><span></span></div>
       <span id="nombreRemoto" class="nombre-remoto-mini">Amiga</span>
-      <span class="tiempo-video" id="tiempo">00:00</span>
+      <span id="estadoVideo" class="estado-video">Conectando cámara...</span>
     </div>
+
+    <span class="tiempo-video" id="tiempo">00:00</span>
+    <button type="button" id="btnActivarAudio" class="btn-activar-audio" style="display:none;">🔊 Activar sonido</button>
 
     <div class="video-propio-mini">
       <video id="miCamara" autoplay playsinline muted></video>
@@ -52,7 +72,7 @@
     </div>
   </div>
 
-  <!-- Mitad para mensajes (50% al activar cámara, 100% si está apagada) -->
+  <!-- Chat: 50% derecha en PC / 50% abajo en celular vertical -->
   <div class="caja-mensajes" id="cajaMensajes"></div>
   <p class="escribiendo" id="indicadorEscribiendo" style="display:none;">escribiendo...</p>
 

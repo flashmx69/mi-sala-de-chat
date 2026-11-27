@@ -1,4 +1,4 @@
-const NOMBRE_CACHE = 'sala-amigas-v5';
+const NOMBRE_CACHE = 'sala-amigas-v8';
 const ARCHIVOS_CORE = [
   './',
   './index.html',
