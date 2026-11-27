@@ -223,10 +223,6 @@ self.addEventListener('fetch', e => {
 </body>
 </html>
 
-4. Agrega estos estilos al final de tu estilos.css
-
-(Manteniendo todo el estilos.css anterior, agrega este bloque al final para los
-estados ocupada, avisos 1 a 1 y solicitudes):
 
 /* ===== BLOQUEO 1 A 1, AVISOS Y SOLICITUDES ===== */
 .persona.ocupada {
@@ -362,7 +358,7 @@ body.oscuro .btn-rechazar-chat {
   cursor: pointer;
   flex-shrink: 0;
 }
-// 5. app.js
+
 // =====================================================
 // SALA DE AMIGAS — Chat 1 a 1 exclusivo + WebRTC Wi-Fi/4G
 // =====================================================
@@ -1577,11 +1573,4 @@ if (pagina === 'videollamada.html') {
   iniciarCamara();
 }
 
-Cómo asegurar el 100% en 4G/5G si alguna operadora bloquea la cámara P2P:
 
-  - Si al probar un dispositivo en Wi-Fi contra otro en 4G/5G el texto funciona
-    perfecto pero el video dice "Red 4G/Wi-Fi bloqueó P2P directo", entra a un
-    servicio gratuito de TURN como Metered.ca (Open Relay) o Cloudflare Calls
-    TURN, copia el objeto { urls, username, credential } que te dan gratis y
-    pégalo en SERVERS_ICE dentro de app.js (donde dice // ,{ urls: 'turn:...'
-    }). Con ese puente TURN pasa por cualquier 4G, 5G o Wi-Fi del mundo.
