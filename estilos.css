@@ -1,35 +1,3 @@
-Para que el sistema funcione con 4 dispositivos (solo 1 a 1 sin que nadie más
-pueda entrar) y sea estable tanto en Wi-Fi como en 4G/5G, agregué lo siguiente:
-
-1.  Bloqueo exclusivo 1 a 1 (con Presencia en tiempo real):
-
-      - Cuando dos personas entran a chatear, quedan marcadas en tiempo real
-        como 🔴 En chat privado (ocupada).
-      - Si un 3.º o 4.º dispositivo intenta entrar con alguna de ellas, no puede
-        entrar al chat: se queda en la sala con el aviso de que está ocupada, y
-        a la persona que está en el chat le aparece la notificación "🔔 [Nombre]
-        quiere chatear contigo" (sin dejar pasar al tercero).
-      - Mientras tanto, los otros dispositivos libres (ej. el 3.º y el 4.º) sí
-        pueden iniciar su propio chat 1 a 1 aparte.
-      - Si alguien está en la sala y otra persona quiere chatear con ella, le
-        aparece la invitación "💬 [Nombre] quiere chatear contigo — [Aceptar]
-        [Rechazar]".
-
-2.  Wi-Fi y 4G/5G para la cámara (WebRTC):
-
-      - El chat de texto y las notificaciones funcionan al 100% en Wi-Fi, 4G
-        y 5G usando Supabase.
-      - Para el video en 4G/5G: agregué reinicio automático de ICE (restartIce)
-        y múltiples servidores STUN. Importante: en redes móviles 4G/5G (CGNAT)
-        que bloquean conexiones directas entre celulares y Wi-Fi, el navegador
-        necesita un servidor TURN como puente; dejé el espacio listo en
-        SERVERS_ICE dentro de app.js y al final te indico cómo pegar
-        credenciales gratuitas en 2 minutos si alguna red 4G te lo pide.
-
-Actualiza estos 5 archivos (service-worker.js, sala.html, chat.html,
-estilos.css, app.js):
-
-1. service-worker.js
 
 const NOMBRE_CACHE = 'sala-amigas-v8';
 const ARCHIVOS_CORE = [
