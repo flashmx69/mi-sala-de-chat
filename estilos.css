@@ -67,7 +67,7 @@ self.addEventListener('fetch', e => {
   );
 });
 
-2. sala.html
+/*2. sala.html*/
 
 <!DOCTYPE html>
 <html lang="es">
@@ -133,7 +133,7 @@ self.addEventListener('fetch', e => {
 </body>
 </html>
 
-3. chat.html
+/*3. chat.html*/
 
 <!DOCTYPE html>
 <html lang="es">
