@@ -2,93 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#FF7E67">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="SalaAmigas">
-  <link rel="apple-touch-icon" href="icono-192.png">
-  <link rel="icon" type="image/png" href="icono-192.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  <title>Iniciar Sesión — Sala de Amigas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
   <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="pagina-login">
-  <button type="button" class="btn-tema" id="btnTema" aria-label="Cambiar tema">🌙</button>
+<body>
 
-  <div class="burbuja b1"></div>
-  <div class="burbuja b2"></div>
-  <div class="burbuja b3"></div>
-
-  <div class="contenedor-login">
-    <div class="lado-izquierdo">
-      <div class="logo">🌸 Sala de Amigas</div>
-      <h2>¡Bienvenida! 💕</h2>
-      <p>Conéctate con tus amigas en cualquier momento y desde cualquier lugar.</p>
-      <div class="beneficios">
-        <p><span class="icono">💬</span> Mensajes en tiempo real</p>
-        <p><span class="icono">📹</span> Cámara dividida en el chat</p>
-        <p><span class="icono">🔒</span> Gratis y seguro</p>
-      </div>
-      <div class="enlace-inicio">
-        <a href="index.html">← Volver al inicio</a>
-      </div>
+<div class="pagina-login">
+  <div class="caja-login">
+    <h2>👋 Bienvenida</h2>
+    
+    <div class="campo">
+      <label>Tu nombre</label>
+      <input type="text" id="nombreUsuario" placeholder="Escribe tu nombre">
     </div>
-
-    <div class="lado-derecho">
-      <div class="pestañas">
-        <button type="button" id="btnEntrar" class="pestaña activa">Entrar</button>
-        <button type="button" id="btnRegistrarse" class="pestaña">Registrarme</button>
-      </div>
-
-      <form id="formEntrar" class="formulario visible">
-        <div class="campo">
-          <label for="correo">Correo electrónico</label>
-          <input type="email" id="correo" placeholder="tu@correo.com">
-          <div class="error" id="errorCorreo">Escribe un correo válido</div>
-        </div>
-        <div class="campo">
-          <label for="clave">Contraseña</label>
-          <input type="password" id="clave" placeholder="Mínimo 6 caracteres">
-          <button type="button" class="ojito" id="btnOjo">👁️</button>
-          <div class="error" id="errorClave">Mínimo 6 caracteres</div>
-        </div>
-        <button type="submit" class="boton">Entrar</button>
-      </form>
-
-      <form id="formRegistro" class="formulario">
-        <div class="campo">
-          <label for="nombre">Tu nombre</label>
-          <input type="text" id="nombre" placeholder="¿Cómo te llamas?">
-          <div class="error" id="errorNombre">Escribe tu nombre</div>
-        </div>
-        <div class="campo">
-          <label for="correoReg">Correo electrónico</label>
-          <input type="email" id="correoReg" placeholder="tu@correo.com">
-          <div class="error" id="errorCorreoReg">Escribe un correo válido</div>
-        </div>
-        <div class="campo">
-          <label for="claveReg">Contraseña</label>
-          <input type="password" id="claveReg" placeholder="Mínimo 6 caracteres">
-          <button type="button" class="ojito" id="btnOjo2">👁️</button>
-          <div class="error" id="errorClaveReg">Mínimo 6 caracteres</div>
-        </div>
-        <button type="submit" class="boton">Crear cuenta</button>
-      </form>
-
-      <div class="exito" id="mensajeExito">
-        <div class="check">✓</div>
-        <h3>🎉 ¡Listo!</h3>
-        <p id="textoExito"></p>
-      </div>
+    
+    <div class="campo">
+      <label>Contraseña</label>
+      <input type="password" id="passUsuario" placeholder="Tu contraseña">
     </div>
+    
+    <button onclick="entrar()">Entrar a la sala</button>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="app.js"></script>
+<script>
+function entrar(){
+  const nombre = document.getElementById('nombreUsuario').value.trim();
+  if(nombre){
+    localStorage.setItem('usuarioNombre', nombre);
+    window.location.href = 'sala.html';
+  }else{
+    alert('Escribe tu nombre por favor');
+  }
+}
+</script>
+
 </body>
 </html>
