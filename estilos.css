@@ -362,9 +362,7 @@ body.oscuro .btn-rechazar-chat {
   cursor: pointer;
   flex-shrink: 0;
 }
-
-5. app.js
-
+// 5. app.js
 // =====================================================
 // SALA DE AMIGAS — Chat 1 a 1 exclusivo + WebRTC Wi-Fi/4G
 // =====================================================
